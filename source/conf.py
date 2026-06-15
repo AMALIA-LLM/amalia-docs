@@ -8,7 +8,7 @@
 
 project = 'AMALIA'
 copyright = '2026, AMALIA'
-author = 'AMALIA Team'
+author = 'Equipa AMALIA'
 #release = '2026'
 
 # -- General configuration ---------------------------------------------------
@@ -26,3 +26,4 @@ exclude_patterns = []
 
 html_theme = 'sphinx_book_theme'
 html_static_path = ['_static']
+html_title = 'Documentação AMALIA'
