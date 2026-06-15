@@ -10,6 +10,6 @@
 set -e  # Exit immediately if a command exits with a non-zero status
 
 eval "$(conda shell.bash hook)"
-source activate sphinx_env
+source activate /home/r.guerra/.conda/envs/sphinx_env
 
 sphinx-autobuild source /data/r.guerra/amalia-sphinx/build/html --port 8503 --host 0.0.0.0
