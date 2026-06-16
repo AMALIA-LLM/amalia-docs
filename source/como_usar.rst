@@ -62,7 +62,7 @@ contexto.
 
    Aqui, o pedido é enviado para o endereço indicado em ``url``, autenticado com um certo ``token``. O modelo com o nome indicado em ``model_name`` responderá então à mensagem  enviada em ``message``.
 
-   Para manter o contexto de uma conversa por esta via, as mensagens anteriores poderão ser incluidas na lista de ``messages``, indicando o ``role`` de ``user`` ou ``assistant`` para mensagens do utilizador e do AMALIA respetivamente. -->
+   Para manter o contexto de uma conversa por esta via, as mensagens anteriores poderão ser incluídas na lista de ``messages``, indicando o ``role`` de ``user`` ou ``assistant`` para mensagens do utilizador e do AMALIA respetivamente. -->
 
 Acesso ao Modelo Público
 ------------------------
@@ -82,7 +82,7 @@ O software recomendado é o `vLLM <https://vllm.ai/>`__ instalado em ambiente `c
    # Login HuggingFace
    hf auth login
 
-O seguinte script ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM recorrendo ao gestor de recursos `slurm <https://slurm.schedmd.com/overview.html>`__:
+O seguinte *script* ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM recorrendo ao gestor de recursos `slurm <https://slurm.schedmd.com/overview.html>`__:
 
 .. code:: bash
 
@@ -116,7 +116,7 @@ O seguinte script ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM rec
        --api-key "$4" \
        --chat-template "$5"
 
-Como exemplo, para correr localmente no porto 8001, com uma certa chave de API ``api_key``, o scrpit pode ser lançado com o comando abaixo.
+Como exemplo, para correr localmente no porto 8001, com uma certa chave de API ``api_key``, o *script* pode ser lançado com o comando abaixo.
 O ficheiro ``chat_template.jinja`` padrão está disponível no repositório HuggingFace.
 
 .. code:: shell
@@ -127,7 +127,7 @@ Utilização de API local
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Tendo o modelo disponível em servidor local, um exemplo simples de utilização
-com curl é:
+com ``curl`` é:
 
 .. code:: shell
 

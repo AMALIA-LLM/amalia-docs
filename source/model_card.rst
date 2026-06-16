@@ -45,7 +45,7 @@ Os seguintes dados foram incluídos na fase de pré-treino do AMALIA:
    `2 <https://huggingface.co/datasets/nanotron/needle_32k_finetuning_dataset>`__).
 
 A componente de SFT de pós-treino incluiu uma mistura de dados criados
-manualmente, gerados sintenticamente e obtidos de *datasets* públicos.
+manualmente, gerados sinteticamente e obtidos de *datasets* públicos.
 Estes dados focaram-se em quatro categorias de treino:
 
 -  *Instruction Following* (Seguimento de Instruções):
@@ -123,7 +123,7 @@ A fase de DPO visa alinhar o comportamento do AMALIA com as preferências
 humanas, refinando as respostas do modelo através da aprendizagem
 baseada em comparações de pares. Nesta fase, o modelo aprende a
 distinguir entre respostas de maior e menor qualidade para a mesma
-instrução, optimizando-se para gerar *outputs* mais úteis, seguros e
+instrução, otimizando-se para gerar *outputs* mais úteis, seguros e
 alinhados com os valores desejados, minimizando simultaneamente
 comportamentos indesejados, como alucinações, toxicidade ou desvios das
 instruções fornecidas. O treino decorreu durante 12 horas, recorrendo a
