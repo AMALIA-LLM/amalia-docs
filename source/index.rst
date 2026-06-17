@@ -8,7 +8,6 @@ Documentação AMALIA
 
 .. toctree::
    :maxdepth: 2
-   :caption: Conteúdo:
 
    como_usar
    rag

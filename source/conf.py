@@ -7,14 +7,14 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'AMALIA'
-copyright = '2026, AMALIA'
-author = 'Equipa AMALIA'
+copyright = ''
+author = ''
 #release = '2026'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ["sphinx_copybutton"]
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -45,7 +45,9 @@ html_theme_options = {
             "icon": "fa-brands fa-hugging-face",
             "type": "fontawesome"
         }
-    ]
+    ],
+    "use_download_button": False,
+    "extra_footer": "<div>AMALIA: Agente Multimodal Automático de Linguagem com IA<br>Todos os materiais estão disponíveis de acordo com a licença Apache 2.0</div>",
 }
 html_favicon = '_static/favicon.png'
 html_js_files = [
