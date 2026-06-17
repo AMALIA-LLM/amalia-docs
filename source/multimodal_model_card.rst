@@ -59,7 +59,7 @@ e dados públicos, que se dividem nas seguintes categorias:
 -  *OCR* (Extração Óptica de Caracteres):
 
    -  Dados sintéticos criados para reconhecimento visual de código;
-   -  *Splits* de *OCR* do Nemotron VLM Dataset v1;
+   -  *Splits* de *OCR* do `Nemotron VLM Dataset v1 <https://huggingface.co/datasets/nvidia/Llama-Nemotron-VLM-Dataset-v1>`__;
    -  `IIIT-5k <https://cvit.iiit.ac.in/research/projects/cvit-projects/the-iiit-5k-word-dataset>`__.
 
 -  *OCR QA* (Perguntas e Respostas sobre texto em imagens):
@@ -71,7 +71,7 @@ e dados públicos, que se dividem nas seguintes categorias:
 -  *Chart & Table Understanding* (Compreensão de Gráficos e Tabelas):
 
    -  Dados sintéticos para compreensão de gráficos e tabelas em português europeu e contextos multilingues;
-   -  Conjuntos de dados de compreensão de gráficos e tabelas do Nemotron VLM Dataset v1 e v2.
+   -  Conjuntos de dados de compreensão de gráficos e tabelas do `Nemotron VLM Dataset v1 <https://huggingface.co/datasets/nvidia/Llama-Nemotron-VLM-Dataset-v1>`__ e `v2 <https://huggingface.co/datasets/nvidia/Nemotron-VLM-Dataset-v2>`__.
 
 -  Outros:
 
