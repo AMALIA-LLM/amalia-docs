@@ -13,5 +13,6 @@ Documentação AMALIA
    como_usar
    rag
    model_card
+   multimodal_model_card
    use_cases
 
