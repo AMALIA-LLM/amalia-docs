@@ -17,8 +17,7 @@ Tecnologia.
 
 Esta colaboração é financiada pelos Programas de Desenvolvimento e
 Inovação do Governo de Portugal, com o objetivo de criar um assistente
-de IA avançado capaz de comunicar eficazmente em várias linguagens, mas
-com foco no português europeu.
+de IA avançado capaz de comunicar eficazmente em português europeu.
 
 O AMALIA-VL utiliza dados de fonte aberta no seu treino, e
 outros dados curados especificamente em português europeu. O AMALIA-VL é treinado

@@ -17,8 +17,7 @@ de Lisboa.
 
 Esta colaboração é financiada pelos Programas de Desenvolvimento e
 Inovação do Governo de Portugal, com o objetivo de criar um assistente
-de IA avançado capaz de comunicar eficazmente em várias linguagens, mas
-com foco no português europeu.
+de IA avançado capaz de comunicar eficazmente em português europeu.
 
 O AMALIA utiliza dados de fonte aberta no seu treino, como os dados
 provenientes do `Arquivo.pt <https://arquivo.pt/>`__, por exemplo, e
@@ -43,8 +42,8 @@ Os seguintes dados foram incluídos na fase de pré-treino do AMALIA:
    `Stack-v2 <https://arxiv.org/abs/2402.19173>`__;
 -  Dados sintéticos para melhorar a retenção em contexto longo filtrados
    a partir de *datasets* públicos
-   (`1 <https://huggingface.co/datasets/lvwerra/needle-llama3-16x8k>`__,
-   `2 <https://huggingface.co/datasets/nanotron/needle_32k_finetuning_dataset>`__).
+   (`needle-llama3-16x8k <https://huggingface.co/datasets/lvwerra/needle-llama3-16x8k>`__,
+   `needle_32k_finetuning_dataset <https://huggingface.co/datasets/nanotron/needle_32k_finetuning_dataset>`__).
 
 A componente de SFT de pós-treino incluiu uma mistura de dados criados
 manualmente, gerados sinteticamente e obtidos de *datasets* públicos.
@@ -60,7 +59,9 @@ Estes dados focaram-se em quatro categorias de treino:
 
 -  *Conversational Reasoning* (Raciocínio Conversacional):
 
-   -  Dados sintéticos criados utilizando *personas* do PersonaHub e Nemotron;
+   -  Dados sintéticos criados utilizando *personas* do
+      `PersonaHub <https://arxiv.org/abs/2406.20094>`__ e
+      `Nemotron <https://huggingface.co/datasets/nvidia/Nemotron-Personas-USA>`__;
    -  *Dataset AMALIA-Hardcoded* com conhecimento autorreferencial;
    -  Dados conversacionais gerados da Wikipedia;
    -  *Splits Chat* e *STEM* do `Nemotron Post-Training
@@ -84,8 +85,13 @@ Estes dados focaram-se em quatro categorias de treino:
 
 -  Matemática:
 
-   -  Dados sintéticos criados utilizando *personas* do PersonaHub e Nemotron;
-   -  *Splits Math* e *Code* do Nemotron Post-Training v1 and v2;
+   -  Dados sintéticos criados utilizando *personas* do
+      `PersonaHub <https://arxiv.org/abs/2406.20094>`__ e
+      `Nemotron <https://huggingface.co/datasets/nvidia/Nemotron-Personas-USA>`__;
+   -  *Splits Math* e *Code* do `Nemotron Post-Training
+      v1 <https://huggingface.co/datasets/nvidia/Nemotron-Post-Training-Dataset-v1>`__
+      e
+      `v2 <https://huggingface.co/datasets/nvidia/Nemotron-Post-Training-Dataset-v2>`__;
    -  *Dataset* de problemas de matemática de escola primária
       `Orca-Math <https://huggingface.co/datasets/microsoft/orca-math-word-problems-200k>`__.
 

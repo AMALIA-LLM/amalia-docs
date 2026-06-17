@@ -72,7 +72,8 @@ O AMALIA está publicamente disponível em código-aberto via `HuggingFace <http
 Como servir uma API localmente
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Para servir localmente o AMALIA, o hardware mínimo recomendado é de 4x GPUs `NVIDIA A100 40GB <https://www.nvidia.com/en-eu/data-center/a100/>`__.
+Para servir localmente o AMALIA, o hardware mínimo é de uma GPU `NVIDIA A100 40GB <https://www.nvidia.com/en-eu/data-center/a100/>`__, sendo que
+para aplicações com vários clientes é recomendado um mínimo de 4 destas GPUs.
 O software recomendado é o `vLLM <https://vllm.ai/>`__ instalado em ambiente `conda <https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html>`__ com Python 3.12+:
 
 .. code:: shell
@@ -91,9 +92,9 @@ O seguinte *script* ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM r
    #SBATCH --partition=slurm_queue
    #SBATCH --nodes=1
    #SBATCH --ntasks=1
-   #SBATCH --gres=gpu:nvidia_a100-sxm4-40gb:4  # Pedir 4 GPUs
-   #SBATCH --cpus-per-task=64                  # Alocar CPUs do sistema
-   #SBATCH --mem=256G                          # Alocar memória RAM do sistema
+   #SBATCH --gres=gpu:nvidia_a100-40gb:4  # Pedir 4 GPUs
+   #SBATCH --cpus-per-task=64             # Alocar CPUs do sistema
+   #SBATCH --mem=256G                     # Alocar memória RAM do sistema
    #SBATCH --output=logs/%x-%j.out
    #SBATCH -e logs/%x-%j.err
 
@@ -109,8 +110,6 @@ O seguinte *script* ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM r
        --port "$3" \
        --tokenizer-mode hf \
        --config-format hf \
-       --enable-auto-tool-choice \
-       --tool-call-parser llama3_json \
        --tensor-parallel-size 4 \
        --gpu-memory-utilization 0.90 \
        --api-key "$4" \
@@ -188,29 +187,6 @@ Para fornecer contexto anterior de uma conversa, basta juntar turnos anteriores 
        }
    ]
 
-Com a versão multimodal do modelo é possível também carregar imagens no input do utilizador.
-Para tal, um link para a imagem poderá ser adicionada ao ``content`` da mensagem, da forma:
-
-.. code:: python
-
-   "messages": [
-       {
-           "role": "user",
-           "content": [
-               {
-                   "type": "text",
-                   "text": "O que está nesta imagem?"
-               },
-               {
-                   "type": "image_url",
-                   "image_url": {
-                       "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Bacalhau_a_Bras.jpg"
-                   }
-               }
-           ]
-       }
-   ]
-
 Outros parâmetros opcionais que poderão ser úteis são:
 
 -  ``max_completion_tokens``: Permite limitar o número de tokens da resposta do modelo;
@@ -236,3 +212,28 @@ Um exemplo de utilização destes parâmetros é:
        "stream": True
    }
 
+Utilização do Modelo Multimodal
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Com a versão multimodal do modelo é possível também carregar imagens no input do utilizador.
+Para tal, um link para a imagem poderá ser adicionada ao ``content`` da mensagem, da forma:
+
+.. code:: python
+
+   "messages": [
+       {
+           "role": "user",
+           "content": [
+               {
+                   "type": "text",
+                   "text": "O que está nesta imagem?"
+               },
+               {
+                   "type": "image_url",
+                   "image_url": {
+                       "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Bacalhau_a_Bras.jpg"
+                   }
+               }
+           ]
+       }
+   ]

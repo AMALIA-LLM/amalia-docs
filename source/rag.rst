@@ -1,8 +1,7 @@
 Utilização com RAG
 ==================
 
-*Retrieval Augmented Generation* (RAG), ou geração aumentada por
-obtenção de dados, é uma técnica usada para melhorar as respostas por um
+*Retrieval Augmented Generation* (RAG) é uma técnica usada para melhorar as respostas por um
 LLM com recurso a informação guardada externamente. Desta forma, o
 modelo poderá responder de forma mais precisa e com informação factual
 em domínios específicos recorrendo a bases de dados de documentos
@@ -112,8 +111,8 @@ adicionados ao contexto da *prompt* final ao AMALIA para responder à
    Com base nesta informação responde ao pedido do utilizador com os dados
    relevantes, citando as fontes necessárias: {user_message}
 
-No final, o utilizador obterá uma resposta correta e detalhada conforme
-os documentos indexados na base de dados assim como as suas citações.
+No final, o utilizador obterá uma resposta correta, detalhada, e devidamente citada,
+conforme os documentos indexados na base de dados.
 
 Segurança
 ~~~~~~~~~
