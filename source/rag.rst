@@ -8,19 +8,19 @@ modelo poderá responder de forma mais precisa e com informação factual
 em domínios específicos recorrendo a bases de dados de documentos
 selecionados.
 
-Um fluxo comum de RAG começa por em extrair termos de pesquisa
+Um fluxo comum de RAG começa por extrair termos de pesquisa
 relevantes a partir da mensagem do utilizador. Com estes termos é feita
-uma pesquisa em base de dados de onde se obtêm um conjunto de documentos
+uma pesquisa numa base de dados de onde se obtêm um conjunto de documentos
 potencialmente relevantes para responder ao utilizador. Estes documentos
-são então introduzidos no contexto do modelo para a resposta final ser
+são introduzidos no contexto do modelo para a resposta final ser
 gerada com as devidas citações.
 
 Indexação e Pesquisa de Documentos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Para garantir que os documentos obtidos para o RAG são relevantes para o
-utilizador, a pesquisa em base de dados deverá ter uma componente
-semântica e não se basear apenas nos termos usados. Por este motivo, é
+utilizador, a pesquisa na base de dados deverá ter uma componente
+semântica e não deve basear-se apenas nos termos usados. Por este motivo, é
 recomendada a utilização de uma base de dados que permita esta
 funcionalidade, como é o caso do
 `OpenSearch <https://opensearch.org/>`__.
@@ -30,7 +30,7 @@ vetores de *embeddings* semânticos para cada documento usando um modelo
 do tipo *SentenceTransformers*, existindo uma variedade de modelos
 multilingues deste tipo publicamente disponíveis.
 
-Após proceder à indexação em base de dados dos documentos junto com os
+Após proceder à indexação dos documentos na base de dados junto com os
 seus vetores de *embeddings*, poderá então ser realizada a pesquisa
 semântica com recurso ao mesmo modelo *SentenceTransformers*.
 
@@ -113,7 +113,7 @@ adicionados ao contexto da *prompt* final ao AMALIA para responder à
    relevantes, citando as fontes necessárias: {user_message}
 
 No final, o utilizador obterá uma resposta correta e detalhada conforme
-os documentos em base de dados assim como as suas citações.
+os documentos indexados na base de dados assim como as suas citações.
 
 Segurança
 ~~~~~~~~~
@@ -121,11 +121,11 @@ Segurança
 Em diversas aplicações, será útil garantir que os pedidos dos utilizadores
 respeitam normas de segurança antes de realizar qualquer processamento.
 
-Uma ferramenta útil, utilizada em vários casos de uso do AMALIA, é o
-`Qwen3Guard <https://qwen.ai/blog?id=qwen3guard>`__. Com este modelo é
+Para este propósito, foi utilizado o `Qwen3Guard <https://qwen.ai/blog?id=qwen3guard>`__
+em vários casos de uso do AMALIA, sendo
 possível classificar os pedidos dos utilizadores como seguros, inseguros
 ou controversos, bem como obter uma categoria para o tipo de insegurança.
 
-Com esta informação, o fluxo da aplicação poderá ser adaptado, por exemplo,
+Com esta informação, o fluxo da aplicação poderá ser adaptado
 para devolver respostas padrão seguras quando os pedidos não são seguros.
 
