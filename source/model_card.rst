@@ -110,7 +110,7 @@ Processo de Treino
 
 No pré-treino, foram maioritariamente seguidos os hiperparâmetros do
 EuroLLM, com a nova mistura de dados, aumentando o comprimento máximo de
-sequência para 32K *tokens* e melhorando o seu conhecimento de português
+sequência para 32k *tokens* e melhorando o seu conhecimento de português
 europeu.
 
 A fase de SFT visa melhorar as capacidades conversacionais e de
@@ -137,7 +137,7 @@ Avaliação
 ---------
 
 No âmbito do AMALIA, foram desenvolvidos dois *benchmarks* com o
-objetivo de avaliar a performance linguística do modelo: 
+objetivo de avaliar a *performance* linguística do modelo:
 
 - **ALBA** (*Automated Linguistics Benchmark for Baseline Assessment*): um
   *benchmark* desenvolvido de modo a obter um teste diagnóstico que
@@ -151,8 +151,8 @@ objetivo de avaliar a performance linguística do modelo:
   dados disponíveis nas variedades de português europeu e de português do
   Brasil.
 
-Adicionalmente, foi criado um *benchmark* com os Exames Nacionais do
-Ensino Secundário em Portugal e foram ainda traduzidos outros
+Adicionalmente, foi criado o *benchmark* **PHEB** (*Portuguese High school Exams Benchmark*)
+com os Exames Nacionais do Ensino Secundário em Portugal e foram ainda traduzidos outros
 *benchmarks* de inglês para português europeu usando um modelo de
 tradução dedicado.
 
