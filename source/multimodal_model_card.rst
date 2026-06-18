@@ -7,13 +7,15 @@ português de Portugal e para a cultura portuguesa.
 Descrição do Modelo
 -------------------
 
-O AMALIA-VL é desenvolvido no âmbito do projecto AMALIA.
+O AMALIA-VL é desenvolvido no âmbito do projeto AMALIA.
 
-O projecto AMALIA é desenvolvido por um consórcio de universidades e centros de
+O projeto AMALIA é desenvolvido por um consórcio de universidades e centros de
 investigação portugueses, incluindo a Universidade NOVA de Lisboa,
 Instituto Superior Técnico, Universidade de Coimbra, Universidade do
 Porto, Universidade do Minho e pela Fundação para a Ciência e
-Tecnologia.
+Tecnologia. O desenvolvimento inclui colaborações com a Universidade
+da Beira Interior, Universidade de Évora, e Instituto Superior de Engenharia
+de Lisboa.
 
 Esta colaboração é financiada pelos Programas de Desenvolvimento e
 Inovação do Governo de Portugal, com o objetivo de criar um assistente

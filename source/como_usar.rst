@@ -189,10 +189,10 @@ Para fornecer contexto anterior de uma conversa, basta juntar turnos anteriores 
 
 Outros parâmetros opcionais que poderão ser úteis são:
 
--  ``max_completion_tokens``: Permite limitar o número de tokens da resposta do modelo;
+-  ``max_completion_tokens``: Permite limitar o número de *tokens* da resposta do modelo;
 -  ``temperature``: Permite ajustar a variância das respostas. Um valor de 0 produz respostas deterministas,
    valores mais próximos de 1 permitem mais variância;
--  ``stream``: Se ``true``, o modelo funcionará em formato de *streaming*, respondendo token a token à medida que estes são gerados em tempo real.
+-  ``stream``: Se ``true``, o modelo funcionará em formato de *streaming*, respondendo *token* a *token* à medida que estes são gerados em tempo real.
    O processamento da resposta deverá ser feita de forma diferente que anteriormente dado o seu formato diferente.
 
 Um exemplo de utilização destes parâmetros é:
@@ -215,7 +215,7 @@ Um exemplo de utilização destes parâmetros é:
 Utilização do Modelo Multimodal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Com a versão multimodal do modelo é possível também carregar imagens no input do utilizador.
+Com a versão multimodal do modelo é possível também carregar imagens no *input* do utilizador.
 Para tal, um link para a imagem poderá ser adicionada ao ``content`` da mensagem, da forma:
 
 .. code:: python
