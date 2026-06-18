@@ -19,13 +19,12 @@ de Lisboa.
 
 Esta colaboração é financiada pelos Programas de Desenvolvimento e
 Inovação do Governo de Portugal, com o objetivo de criar um assistente
-de IA avançado capaz de comunicar eficazmente em português europeu.
+de IA avançado capaz de comunicar de forma eficaz em português europeu.
 
 O AMALIA-VL utiliza dados de fonte aberta no seu treino, e
-outros dados curados especificamente em português europeu. O AMALIA-VL é treinado
-apenas com pós treino, sendo o AMALIA o LLM base. O treino foi feito em três 
+outros dados curados especificamente em português europeu. O AMALIA-VL é treinado com pós treino a partir do AMALIA. O treino foi feito em três
 fases: *Modality Alignment*, *Visual Instruction Following* e *Preference Tuning*.
-As primeiras duas fases são realizadas através de *Supervised Fine-Tuning* (SFT), 
+As primeiras duas fases são realizadas através de *Supervised Fine-Tuning* (SFT),
 e a última fase é realizada usando *Direct Preference Optimization* (DPO).
 
 Detalhes de Treino Multimodal
@@ -34,11 +33,11 @@ Detalhes de Treino Multimodal
 Dados de Treino
 ~~~~~~~~~~~~~~~
 
-Para a primeira fase, *Modality Alignment*, foram usados 500.000 pares de imagem e texto do 
-dataset `PD12M <https://huggingface.co/datasets/PD12M>`__. Estes foram parcialmente traduzidos 
-para português europeu usando o `Gemma 3 <https://arxiv.org/abs/2503.19786>`__.
+Para a primeira fase, *Modality Alignment*, foram usados 500.000 pares de imagem e texto do
+dataset `PD12M <https://huggingface.co/datasets/PD12M>`__. Estes foram parcialmente traduzidos
+para português europeu através do `Gemma 3 <https://arxiv.org/abs/2503.19786>`__.
 
-Para a seguinte fase, *Visual Instruction Following*, foi utilizada uma mistura de dados sintéticos
+Para a seguinte fase, *Visual Instruction Following*, foi adotada uma mistura de dados sintéticos
 e dados públicos, que se dividem nas seguintes categorias:
 
 -  *Image Grounding* (Ancoragem de respostas a imagens):
@@ -49,9 +48,9 @@ e dados públicos, que se dividem nas seguintes categorias:
 
    -  Dados sintéticos criados para perguntas e respostas visuais com foco em português europeu, usando coleções de imagens abertas como o `PD12M <https://huggingface.co/datasets/PD12M>`__ e o `Open Images <https://storage.googleapis.com/openimages/web/index.html>`__;
    -  *Dataset AMALIA-Hardcoded* com conhecimento autorreferencial;
-   -  Dados conversacionais gerados da Wikipedia;
+   -  Dados conversacionais gerados a partir da Wikipedia;
    -  *Splits* de *VQA* do `Nemotron VLM Dataset v1 <https://huggingface.co/datasets/nvidia/Llama-Nemotron-VLM-Dataset-v1>`__;
-   -  Vários outros datasets públicos de VQA obtidos através da coleção `FineVision <https://huggingface.co/datasets/HuggingFaceM4/FineVision>`__, incluindo:
+   -  Vários outros conjuntos de dados públicos de *VQA* obtidos através da coleção `FineVision <https://huggingface.co/datasets/HuggingFaceM4/FineVision>`__, incluindo:
 
       -  `VQAv2 <https://visualqa.org>`__;
       -  `VisDialog <https://visualdialog.org>`__;
@@ -66,7 +65,7 @@ e dados públicos, que se dividem nas seguintes categorias:
 
 -  *OCR QA* (Perguntas e Respostas sobre texto em imagens):
 
-   -  Dados sintéticos para reconhecimento e compreensão visual de texto em português europeu;
+   -  Dados sintéticos em português europeu para reconhecimento e compreensão visual de texto;
    -  `TextVQA <https://textvqa.org>`__;
    -  `OCR-VQA <https://ocr-vqa.github.io>`__.
 
@@ -90,33 +89,33 @@ e dados públicos, que se dividem nas seguintes categorias:
 
 Para a fase final, de otimização de preferências, foram utilizados os seguintes conjuntos de dados:
 
--  `MMPR <https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2>`__: um dataset de otimização de preferências multimodal, usado no treino do modelo InternVL 3.5;
--  Dados sintéticos de otimização de preferências multimodal, criados com base com base nos conjuntos de dados de treino da fase anterior, com o objetivo de melhorar a capacidade do modelo em distinguir entre respostas de maior e menor qualidade para a mesma instrução.
+-  `MMPR <https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2>`__: um dataset de otimização de preferências multimodal, usado no treino do modelo `InternVL 3.5 <https://arxiv.org/abs/2508.18265>`__;
+-  Dados sintéticos de otimização de preferências multimodal, criados com base nos conjuntos de dados de treino da fase anterior, com o objetivo de melhorar a capacidade do modelo distinguir respostas de maior e menor qualidade para a mesma instrução.
 
 Processo de Treino
 ~~~~~~~~~~~~~~~~~~
 
-A fase inicial de *Modality Alignment* tem como objetivo alinhar as 
-representações de visão e linguagem do modelo, permitindo que o 
-AMALIA-VL compreenda e integre informações visuais e textuais de forma 
-eficaz. Para isto, apenas é treinado o conector de modalidades, mantendo 
-ambos os modelos de visão e linguagem congelados. Esta fase demorou 4 
+A fase inicial de *Modality Alignment* tem como objetivo alinhar as
+representações de visão e linguagem do modelo, permitindo que o
+AMALIA-VL compreenda e integre informações visuais e textuais de forma
+eficaz. Para isto, apenas é treinado o conetor de modalidades, mantendo
+ambos os modelos de visão e linguagem congelados. Esta fase demorou 4
 horas em 8 GPUs NVIDIA H100, totalizando 2k *steps*.
 
 A segunda fase, de *Visual Instruction Following*, tem como objetivo
-ensinar o modelo a seguir instruções visuais e executar variadas tarefas 
-com base em *inputs* visuais, incluindo perguntas e respostas visuais, 
-ancoragem de respostas a imagens, compreensão de gráficos e tabelas, 
-reconhecimento de texto em imagens e compreensão de cenas. Nesta fase, 
-o modelo é treinado usando *Supervised Fine-Tuning* (SFT) e todos os 
-parâmetros do modelo são treinados. Aqui, o modelo tem um contexto 
-máximo de 16384 *tokens* e um *budget* visual de 7800 *tokens* visuais por 
-imagem. O treino decorreu durante 96 horas, recorrendo a 128 GPUs NVIDIA 
-H100, totalizando em 49k *steps*.
+ensinar o modelo a seguir instruções visuais e executar variadas tarefas
+com base em *inputs* visuais, incluindo perguntas e respostas visuais,
+ancoragem de respostas a imagens, compreensão de gráficos e tabelas,
+reconhecimento de texto em imagens e compreensão de cenas. Nesta fase,
+o modelo é treinado em regime de *Supervised Fine-Tuning* (SFT) e todos os
+parâmetros do modelo são treinados. Aqui, o modelo tem um contexto
+máximo de 16384 *tokens*, e uma capacidade de até 7800 *tokens* visuais por
+imagem. O treino decorreu durante 96 horas, recorrendo a 128 GPUs NVIDIA
+H100, totalizando 49k *steps*.
 
-A fase final de treino, de DPO, visa refinar as respostas do modelo através 
+A fase final de treino, de DPO, visa refinar as respostas do modelo através
 da aprendizagem baseada em comparações de pares. Nesta fase, para a mesma instrução, o modelo aprende a
-maximizar a probabilidade de gerar respostas de maior qualidade e minimizar a 
+maximizar a probabilidade de gerar respostas de maior qualidade e minimizar a
 probabilidade de gerar respostas de menor, otimizando-se para gerar *outputs* mais úteis, seguros e
 alinhados com os valores desejados, minimizando simultaneamente
 comportamentos indesejados, como alucinações, toxicidade ou desvios das
@@ -130,10 +129,10 @@ no Barcelona Supercomputing Center.
 Avaliação
 ---------
 
-Para avaliar o desempenho do AMALIA-VL, foram traduzidas 18 *benchmarks* 
-multimodais para português europeu, utilizando modelos de estado da 
-arte. Para garantir a qualidade das traduções, foi realizada uma 
-revisão humana em *subsets* dos dados para validar a precisão e a 
+Para avaliar o desempenho do AMALIA-VL, foram traduzidas 18 *benchmarks*
+multimodais para português europeu, utilizando modelos de estado da
+arte. Para garantir a qualidade das traduções, foi realizada uma
+revisão humana em *subsets* dos dados para validar a precisão e a
 fluidez das traduções.
 
 Adicionalmente, foram criados dois *benchmarks* para avaliar o AMALIA-VL
@@ -148,7 +147,7 @@ em capacidades específicas do português europeu e da cultura portuguesa:
    desenvolvido para avaliar o conhecimento dos modelos sobre a cultura e a história portuguesas,
    abrangendo cinco categorias distintas: Arte, Gastronomia, Localidades, Monumentos e Personalidades.
 
-A avaliação mostra que, dentro dos modelos abertos, **o AMALIA-VL é 
-altamente competitivo em Português Europeu**, com excelente desempenho 
-em tarefas de compreensão de texto em imagens e em tarefas de 
+A avaliação mostra que, dentro dos modelos abertos, **o AMALIA-VL é
+altamente competitivo em Português Europeu**, com excelente desempenho
+em tarefas de compreensão de texto em imagens e em tarefas de
 ancoragem de respostas a imagens.
