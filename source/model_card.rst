@@ -144,32 +144,21 @@ no Barcelona Supercomputing Center.
 Avaliação
 ---------
 
-No âmbito do AMALIA, foram desenvolvidos dois *benchmarks* com o
-objetivo de avaliar a *performance* linguística do modelo:
+No âmbito do AMALIA, foram desenvolvidos novos *benchmarks* com o objetivo de avaliar a *performance* do modelo em Português Europeu:
 
-- **ALBA** (*Automated Linguistics Benchmark for Baseline Assessment*): um
-  *benchmark* desenvolvido de modo a obter um teste diagnóstico que
-  providencia uma visão geral das capacidades do modelo e cujo objetivo é
-  avaliar a performance de LLMs em tarefas linguísticas em português
-  europeu. Para tal, foram selecionadas oito dimensões: Fonética e
-  Fonologia, Sintaxe, Morfologia, Lexicologia, Semântica Cultural, Jogos
-  de Palavras, Análise do Discurso e Variedade Linguística; 
-- **P3B3** (*pt-PT/pt-BR Bias Benchmark*): um *benchmark* cujo objetivo é avaliar o
-  viés entre variedades de português em LLMs devido ao desequilíbrio de
-  dados disponíveis nas variedades de português europeu e de português do
-  Brasil.
+-  `ALBA <https://aclanthology.org/2026.propor-1.69/>`__ (*Automated Linguistics Benchmark for Baseline Assessment*):
+   Avalia o desempenho em tarefas linguísticas em português europeu (pt-PT). A avaliação divide-se em oito dimensões: Fonética e Fonologia, Sintaxe, Morfologia, Lexicologia, Semântica Cultural, Jogos de Palavras, Análise do Discurso e Variedade Linguística.
+-  `P3B3 <http://arxiv.org/abs/2606.16753>`__ (*pt-PT/pt-BR Bias Benchmark*):
+   Avalia o viés (*bias*) dos modelos para as variantes de Português pt-PT e pt-BR.
+-  `PHEB <https://lrec.elra.info/lrec2026-main-367>`__ (*Portuguese High School Exams Benchmark*):
+   Baseado nos Exames Nacionais do Ensino Secundário de Portugal, avalia a capacidade de resolver tarefas alinhadas com o currículo educacional Português.
+-  **CulturaVivaPT**:
+   Foca-se na compreensão cultural e no conhecimento específico de Portugal, avaliando para responder a questões sobre temas diversos como festivais, gastronomia, história e desporto.
+-  **SAUDADE**:
+   Mede a compreensão de eventos históricos e culturais de Portugal sob uma perspetiva temporal.
 
-Adicionalmente, foi criado o *benchmark* **PHEB** (*Portuguese High school Exams Benchmark*)
-com os Exames Nacionais do Ensino Secundário em Portugal e foram ainda traduzidos outros
-*benchmarks* de inglês para português europeu usando um modelo de
-tradução dedicado.
+Adicionalmente, vários *benchmarks* de referência foram traduzidos de inglês para português europeu recorrendo a um modelo de tradução dedicado.
 
-A avaliação mostra que, dentro dos modelos abertos, **o AMALIA é o
-modelo aberto estado da arte em Português Europeu**, apresentando melhor
-*performance* que modelos abertos anteriores. Em raciocínio e
-compreensão linguística, o modelo tem *performance* comparável com o
-estado da arte, revelando excelente qualidade e fluência em texto
-Português Europeu em tarefas generativas.
+Para garantir avaliações reproduzíveis, o processo de avaliação utiliza a framework `LLM Evaluation Harness <https://github.com/EleutherAI/lm-evaluation-harness>`__ com código e tarefas customizadas disponível no `GitHub <https://github.com/Amalia-LLM/amalia-eval>`__.
 
-Em termos de segurança, o AMALIA demonstra-se alinhado com os padrões de
-segurança do estado da arte.
+Os resultados demonstram que, no ecossistema de modelos totalmente abertos (*fully open-source*), o AMALIA posiciona-se entre os **modelos de referência** para o português europeu, apresentando um desempenho ao nível do estado da arte. Em termos de segurança, o AMALIA encontra-se **alinhado** com os padrões e práticas de segurança observados nos modelos de referência atuais.
