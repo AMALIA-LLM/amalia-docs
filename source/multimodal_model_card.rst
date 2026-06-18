@@ -134,6 +134,18 @@ arte. Para garantir a qualidade das traduções, foi realizada uma
 revisão humana em *subsets* dos dados para validar a precisão e a 
 fluidez das traduções.
 
+Adicionalmente, foram criados dois *benchmarks* para avaliar o AMALIA-VL
+em capacidades específicas do português europeu e da cultura portuguesa:
+
+-  **PorTEXTO** (*European Portuguese Benchmark for Visual Text Extraction*):
+   desenvolvido para avaliar o desempenho dos modelos abertos na extração de texto pt-PT
+   a partir de imagens, incluindo: documentos com texto escrito manualmente,
+   texto em ambientes reais e típicos na cultura portuguesa, e documentos com texto
+   sinteticamente gerado sobre imagens de fundo;
+-  **CARAVELA** (*Cultural Awareness and Recognition Assessment for Visual Entity Literacy and Analysis*):
+   desenvolvido para avaliar o conhecimento dos modelos sobre a cultura e a história portuguesas,
+   abrangendo cinco categorias distintas: Arte, Gastronomia, Localidades, Monumentos e Personalidades.
+
 A avaliação mostra que, dentro dos modelos abertos, **o AMALIA-VL é 
 altamente competitivo em Português Europeu**, com excelente desempenho 
 em tarefas de compreensão de texto em imagens e em tarefas de 
