@@ -215,8 +215,8 @@ Um exemplo de utilização destes parâmetros é:
 Utilização do Modelo Multimodal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Com a versão multimodal do modelo é possível também carregar imagens no *input* do utilizador.
-Para tal, um link para a imagem poderá ser adicionada ao ``content`` da mensagem, da forma:
+Com a versão multimodal (visão e linguagem) do AMALIA é possível também carregar imagens no *input* do utilizador, permitindo que o modelo responda a perguntas sobre o conteúdo da imagem.
+Para tal, basta seguir os passos detalhados anteriormente, adicionando apenas um *path* para a imagem ao ``content`` da mensagem, da forma:
 
 .. code:: python
 
@@ -225,15 +225,14 @@ Para tal, um link para a imagem poderá ser adicionada ao ``content`` da mensage
            "role": "user",
            "content": [
                {
-                   "type": "text",
-                   "text": "O que está nesta imagem?"
+                   "type": "image",
+                   "image": "path/to/image.png"
                },
                {
-                   "type": "image_url",
-                   "image_url": {
-                       "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Bacalhau_a_Bras.jpg"
-                   }
+                   "type": "text",
+                   "text": "O que está nesta imagem?"
                }
            ]
        }
    ]
+
