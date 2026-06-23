@@ -122,10 +122,11 @@ explica cada tipo em detalhe. Um exemplo simples de criação de um índice é o
    }
    client.indices.create(index_name, body=index_body)
 
-Para popular o índice, os dados deverão ter um formato compatível com
+Para popular o índice, os dados deverão ter um formato *JSON* compatível com
 o índice criado. Esta operação pode ser feita em *bulk*, para indexar
 vários documentos de uma vez. O exemplo abaixo mostra como enviar os
-documentos para o OpenSearch em conjuntos de 500.
+documentos para o OpenSearch em conjuntos de 500, tendo estes sido
+previamente processados e formatados em ``documents``.
 
 .. code:: python
 
@@ -147,8 +148,8 @@ documentos para o OpenSearch em conjuntos de 500.
            payload_string += this_line
        return payload_string
 
-   for j in range(0, dset_concat.num_rows, 500):
-       response=client.bulk(body=payload_constructor(dset_concat,j,action),index=index_name)
+   for j in range(0, documents.num_rows, 500):
+       response=client.bulk(body=payload_constructor(documents,j,action),index=index_name)
        print(j, " Errors:", response['errors'])
 
 Após finalizar a indexação dos documentos na base de dados, poderão então ser realizadas pesquisas
