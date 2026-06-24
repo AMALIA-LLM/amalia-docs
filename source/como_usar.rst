@@ -67,7 +67,7 @@ contexto.
 Acesso ao Modelo Público
 ------------------------
 
-O AMALIA está publicamente disponível em código-aberto via `HuggingFace <https://huggingface.co/carminho/AMALIA-9B-50-1225-DPO>`__.
+O AMALIA está publicamente disponível em código-aberto via `HuggingFace <https://huggingface.co/amalia-llm/AMALIA-9B-50-1225-DPO>`__.
 
 Como servir uma API localmente
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,7 +120,7 @@ O ficheiro ``chat_template.jinja`` padrão está disponível no repositório Hug
 
 .. code:: shell
 
-   sbatch serve_llm.sh carminho/AMALIA-9B-50-DPO 0.0.0.0 8001 api_key ./chat_template.jinja
+   sbatch serve_llm.sh amalia-llm/AMALIA-9B-50-DPO 0.0.0.0 8001 api_key ./chat_template.jinja
 
 Utilização de API local
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,7 +133,7 @@ com ``curl`` é:
    curl -X POST http://127.0.0.1:8001/v1/chat/completions \
        -H "Content-Type: application/json" \
        -H "Authorization: Bearer api_key" \
-       --data '{"model": "carminho/AMALIA-9B-50-DPO", "messages": [{"role": "user", "content": "Olá"}]}'
+       --data '{"model": "amalia-llm/AMALIA-9B-50-DPO", "messages": [{"role": "user", "content": "Olá"}]}'
 
 Ou usando Python:
 
@@ -149,7 +149,7 @@ Ou usando Python:
    }
 
    payload = {
-       "model": "carminho/AMALIA-9B-50-DPO",
+       "model": "amalia-llm/AMALIA-9B-50-DPO",
        "messages": [
            {
                "role": "user",
@@ -200,7 +200,7 @@ Um exemplo de utilização destes parâmetros é:
 .. code:: python
 
    payload = {
-       "model": "carminho/AMALIA-9B-50-DPO",
+       "model": "amalia-llm/AMALIA-9B-50-DPO",
        "messages": [
            {
                "role": "user",

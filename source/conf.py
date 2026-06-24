@@ -41,7 +41,7 @@ html_theme_options = {
         },
         {
             "name": "HuggingFace",
-            "url": "https://huggingface.co/carminho",
+            "url": "https://huggingface.co/amalia-llm",
             "icon": "fa-brands fa-hugging-face",
             "type": "fontawesome"
         }
