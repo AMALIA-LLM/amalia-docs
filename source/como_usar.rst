@@ -67,7 +67,7 @@ contexto.
 Acesso ao Modelo Público
 ------------------------
 
-O AMALIA está publicamente disponível em código-aberto via `HuggingFace <https://huggingface.co/amalia-llm/AMALIA-9B-50-1225-DPO>`__.
+O AMALIA está publicamente disponível em código-aberto via `HuggingFace <https://huggingface.co/amalia-llm>`__.
 
 Como servir uma API localmente
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +115,7 @@ O seguinte *script* ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM r
        --api-key "$4" \
        --chat-template "$5"
 
-Como exemplo, para correr localmente no porto 8001, com uma certa chave de API ``api_key``, o *script* pode ser lançado com o comando abaixo.
+Como exemplo, para correr localmente o modelo de texto no porto 8001, com uma certa chave de API ``api_key``, o *script* pode ser lançado com o comando abaixo.
 O ficheiro ``chat_template.jinja`` padrão está disponível no repositório HuggingFace.
 
 .. code:: shell
@@ -220,19 +220,22 @@ Para tal, basta seguir os passos detalhados anteriormente, adicionando apenas um
 
 .. code:: python
 
-   "messages": [
-       {
-           "role": "user",
-           "content": [
-               {
-                   "type": "image",
-                   "image": "path/to/image.png"
-               },
-               {
-                   "type": "text",
-                   "text": "O que está nesta imagem?"
-               }
-           ]
-       }
-   ]
+   payload = {
+       "model": "amalia-llm/AMALIA-VL-DPO",
+       "messages": [
+           {
+               "role": "user",
+               "content": [
+                   {
+                       "type": "image",
+                       "image": "path/to/image.png"
+                   },
+                   {
+                       "type": "text",
+                       "text": "O que está nesta imagem?"
+                   }
+               ]
+           }
+       ]
+   }
 
