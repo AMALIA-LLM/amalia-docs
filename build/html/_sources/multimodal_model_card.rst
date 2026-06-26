@@ -87,10 +87,8 @@ e dados públicos, que se dividem nas seguintes categorias:
    -  Dados sintéticos e públicos para compreensão de documentos visuais, incluindo `DocVQA <https://docvqa.org>`__;
    -  Reutilização de dados de instrução textual do AMALIA-LLM para preservar o alinhamento entre as capacidades de linguagem e visão do modelo.
 
-Para a fase final, de otimização de preferências, foram utilizados os seguintes conjuntos de dados:
-
--  `MMPR <https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2>`__: um dataset de otimização de preferências multimodal, usado no treino do modelo `InternVL 3.5 <https://arxiv.org/abs/2508.18265>`__;
--  Dados sintéticos de otimização de preferências multimodal, criados com base nos conjuntos de dados de treino da fase anterior, com o objetivo de melhorar a capacidade do modelo distinguir respostas de maior e menor qualidade para a mesma instrução.
+Para a fase final, de otimização de preferências, foram utilizados os dados sintéticos de otimização de preferências multimodal.
+Estes dados foram criados com base nos conjuntos de dados de treino da fase anterior, com o objetivo de melhorar a capacidade do modelo distinguir respostas de maior e menor qualidade para a mesma instrução.
 
 Processo de Treino
 ~~~~~~~~~~~~~~~~~~
