@@ -1,0 +1,662 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Utilização com RAG &#8212; Documentação AMALIA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'rag';</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/js/brands.min.js"></script>
+    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Model Card" href="model_card.html" />
+    <link rel="prev" title="Como Usar" href="como_usar.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo-color-black.png" class="logo__image only-light" alt="Documentação AMALIA - Home"/>
+    <img src="_static/logo-color-white.png" class="logo__image only-dark pst-js-only" alt="Documentação AMALIA - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AMALIA-LLM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://huggingface.co/amalia-llm" title="HuggingFace" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-hugging-face fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">HuggingFace</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="como_usar.html">Como Usar</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Utilização com RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_card.html">Model Card</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_model_card.html">Multimodal Model Card</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use_cases.html">Casos de Uso</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Utilização com RAG</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexacao-e-pesquisa-de-documentos">Indexação e Pesquisa de Documentos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacao-do-fluxo-de-rag">Implementação do Fluxo de RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seguranca">Segurança</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="utilizacao-com-rag">
+<h1>Utilização com RAG<a class="headerlink" href="#utilizacao-com-rag" title="Link to this heading">#</a></h1>
+<p><em>Retrieval Augmented Generation</em> (RAG) é uma técnica usada para melhorar as respostas dadas por um
+LLM com recurso a informação guardada externamente. Desta forma, o
+modelo poderá responder de forma mais precisa e com informação factual
+em domínios específicos recorrendo a bases de dados de documentos
+selecionados.</p>
+<p>Um fluxo comum de RAG está representado no diagrama abaixo. Este começa por extrair termos de pesquisa
+relevantes a partir da mensagem do utilizador (1). Com estes termos é feita
+uma pesquisa numa base de dados (2) de onde se obtêm um conjunto de documentos
+potencialmente relevantes para responder ao utilizador (3). Estes documentos
+são introduzidos no contexto do modelo (4) para a resposta final ser
+gerada com as devidas citações (5).</p>
+<a class="reference internal image-reference" href="_images/RAG.png"><img alt="Fluxo RAG" src="_images/RAG.png" style="width: 800px;" />
+</a>
+<section id="indexacao-e-pesquisa-de-documentos">
+<h2>Indexação e Pesquisa de Documentos<a class="headerlink" href="#indexacao-e-pesquisa-de-documentos" title="Link to this heading">#</a></h2>
+<p>Para garantir que os documentos obtidos para o RAG são relevantes para o
+utilizador, a pesquisa na base de dados deverá ter uma componente
+semântica e não deve basear-se apenas nos termos usados. Por este motivo, é
+recomendada a utilização de uma base de dados que permita esta
+funcionalidade, como é o caso do
+<a class="reference external" href="https://opensearch.org/">OpenSearch</a>.</p>
+<p>De forma a tirar partido de pesquisa semântica, é necessário gerar
+vetores de <em>embeddings</em> semânticos para cada documento usando um modelo
+do tipo <em>SentenceTransformers</em>, existindo uma variedade de modelos
+multilingues deste tipo publicamente disponíveis, tais como o <a class="reference external" href="https://huggingface.co/Qwen/Qwen3-Embedding-0.6B">Qwen3-Embedding-0.6B</a>,
+o <a class="reference external" href="https://huggingface.co/BAAI/bge-m3">BGE-M3</a> ou o <a class="reference external" href="https://huggingface.co/nomic-ai/nomic-embed-text-v1.5">nomic-embed-text-v1.5</a>.
+Estes podem ser usados como no exemplo:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A capital de Portugal é Lisboa.&quot;</span><span class="p">,</span><span class="s2">&quot;A capital de Espanha é Madrid.&quot;</span><span class="p">]</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">&quot;Qwen/Qwen3-Embedding-0.6B&quot;</span><span class="p">)</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A biblioteca <code class="docutils literal notranslate"><span class="pre">opensearchpy</span></code> de Python pode ser usada para conectar a uma
+base de dados OpenSearch e interagir com os seus índices da forma:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">opensearchpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenSearch</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenSearch</span><span class="p">(</span>
+    <span class="n">hosts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">port</span><span class="p">}],</span>
+    <span class="n">http_compress</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">http_auth</span> <span class="o">=</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span>
+    <span class="n">use_ssl</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">url_prefix</span> <span class="o">=</span> <span class="s1">&#39;prefix&#39;</span><span class="p">,</span>
+    <span class="n">verify_certs</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">ssl_assert_hostname</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">ssl_show_warn</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">index_name</span> <span class="o">=</span> <span class="s1">&#39;data_index&#39;</span>
+<span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">index_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Para criar um índice no OpenSearch, é necessário fornecer a estrutura dos
+dados a ser guardados. Para além do texto dos documentos e os vetores
+de <em>embeddings</em> calculados, outros metadados relevantes podem ser incluídos,
+tais como os títulos dos documentos ou um URL para a sua fonte, que poderão
+ser úteis de incluir na resposta final apresentada ao utilizador.</p>
+<p>Cada um dos campos de dados deve ser declarado no mapeamento do índice a criar
+com o tipo correspondente. A <a class="reference external" href="https://docs.opensearch.org/latest/mappings/supported-field-types/index/">documentação do OpenSearch</a>
+explica cada tipo em detalhe. Um exemplo simples de criação de um índice é o seguinte:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">index_body</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s2">&quot;settings&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;index&quot;</span><span class="p">:{</span>
+         <span class="s2">&quot;number_of_replicas&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+         <span class="s2">&quot;number_of_shards&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
+         <span class="s2">&quot;refresh_interval&quot;</span><span class="p">:</span><span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;knn&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span>
+      <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;mappings&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;dynamic&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;properties&quot;</span><span class="p">:{</span>
+         <span class="s2">&quot;id&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;keyword&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;title&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;analyzer&quot;</span><span class="p">:</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;similarity&quot;</span><span class="p">:</span><span class="s2">&quot;BM25&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;url&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;keyword&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;text&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;analyzer&quot;</span><span class="p">:</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;similarity&quot;</span><span class="p">:</span><span class="s2">&quot;BM25&quot;</span>
+         <span class="p">},</span>
+         <span class="s2">&quot;embeddings&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;knn_vector&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dimension&quot;</span><span class="p">:</span> <span class="mi">768</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:{</span>
+               <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;hnsw&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;space_type&quot;</span><span class="p">:</span><span class="s2">&quot;cosinesimil&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;engine&quot;</span><span class="p">:</span><span class="s2">&quot;faiss&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;parameters&quot;</span><span class="p">:{</span>
+                  <span class="s2">&quot;ef_construction&quot;</span><span class="p">:</span><span class="mi">256</span><span class="p">,</span>
+                  <span class="s2">&quot;m&quot;</span><span class="p">:</span><span class="mi">48</span>
+               <span class="p">}</span>
+            <span class="p">}</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">index_body</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Para popular o índice, os dados deverão ter um formato <em>JSON</em> compatível com
+o índice criado. Esta operação pode ser feita em <em>bulk</em>, para indexar
+vários documentos de uma vez. O exemplo abaixo mostra como enviar os
+documentos para o OpenSearch em conjuntos de 500, tendo estes sido
+previamente processados e formatados em <code class="docutils literal notranslate"><span class="pre">documents</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">action</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="n">index_name</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">payload_constructor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">start_id</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="n">action_string</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">payload_string</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_id</span><span class="p">,</span><span class="n">start_id</span><span class="o">+</span><span class="mi">500</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="n">data</span><span class="o">.</span><span class="n">num_rows</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">datum</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">payload_string</span> <span class="o">+=</span> <span class="n">action_string</span>
+        <span class="n">this_line</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">datum</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">payload_string</span> <span class="o">+=</span> <span class="n">this_line</span>
+    <span class="k">return</span> <span class="n">payload_string</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">documents</span><span class="o">.</span><span class="n">num_rows</span><span class="p">,</span> <span class="mi">500</span><span class="p">):</span>
+    <span class="n">response</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">payload_constructor</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">action</span><span class="p">),</span><span class="n">index</span><span class="o">=</span><span class="n">index_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="s2">&quot; Errors:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Após finalizar a indexação dos documentos na base de dados, poderão então ser realizadas pesquisas
+semânticas com recurso ao mesmo modelo <em>SentenceTransformers</em>. O seguinte exemplo
+mostra como fazer uma destas pesquisas após calcular externamente os <em>embeddings</em> de uma
+<code class="docutils literal notranslate"><span class="pre">query</span></code> de pesquisa:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query_emb</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">query_body</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;knn&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;vector&quot;</span><span class="p">:</span> <span class="n">query_emb</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">query_body</span><span class="p">,</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">index_name</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternativamente, o modelo <em>SentenceTransformers</em> poderá ser registado no OpenSearch
+para possibilitar pesquisas semânticas sem necessitar de calcular <em>embeddings</em> externamente.
+A <a class="reference external" href="https://docs.opensearch.org/latest/ml-commons-plugin/custom-local-models/">documentação</a> explica como fazer este registo.
+Neste caso, a pesquisa pode ser feita da forma:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query_body</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s1">&#39;_source&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;text&#39;</span><span class="p">,</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;neural&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;embeddings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;query_text&quot;</span><span class="p">:</span> <span class="n">query_str</span><span class="p">,</span>
+                <span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="n">model_id</span><span class="p">,</span>
+                <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">2</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">query_body</span><span class="p">,</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">index_name</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="implementacao-do-fluxo-de-rag">
+<h2>Implementação do Fluxo de RAG<a class="headerlink" href="#implementacao-do-fluxo-de-rag" title="Link to this heading">#</a></h2>
+<p>Tendo a base de dados para RAG disponível, é possível definir uma
+sequência de <em>prompts</em> a enviar ao AMALIA a partir da mensagem do
+utilizador. Sendo que este fluxo poderá ter passos diferentes dependendo
+do caso de uso, esta secção descreve uma implementação simples para
+ilustração.</p>
+<p>O primeiro passo poderá passar por detetar se é necessária uma pesquisa
+na base de dados para responder ao utilizador. Para tal, pode ser criada
+uma <em>prompt</em> para o AMALIA com esta questão e a <code class="docutils literal notranslate"><span class="pre">mensagem</span></code> original,
+junto com um conjunto de regras e exemplos de situações em que deverá ou
+não ser feita pesquisa. Um exemplo genérico é:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Com base na seguinte frase: &quot;{mensagem}&quot;
+Devemos fazer uma pesquisa na base de dados? Só podes responder com sim ou não.
+Situações em que deves fazer pesquisa:
+- Tens informação limitada ou incerta sobre o assunto
+- Precisas de informação factual atualizada
+- Tens dúvidas sobre a exatidão da tua informação
+- A pergunta requer exatidão ou detalhes específicos
+&lt;...&gt;
+Situações em que não deves fazer pesquisa:
+- Discussões gerais ou opiniões pessoais
+- Cumprimentos ou despedidas
+- Conversas informais que não requerem informação factual
+&lt;...&gt;
+EXEMPLOS:
+Pergunta: &quot;Quem é &lt;pessoa específica&gt;?&quot; → Sim
+Pergunta: &quot;O que é &lt;assunto específico&gt;?&quot; → Sim
+Pergunta: &quot;Como estás?&quot; → Não
+Pergunta: &quot;Olá bom dia!&quot; → Não
+&lt;...&gt;
+A tua resposta [Sim/Não]:
+</pre></div>
+</div>
+<p>De seguida, caso a resposta anterior seja afirmativa, poder-se-á pedir
+ao AMALIA para extrair os termos essenciais da <code class="docutils literal notranslate"><span class="pre">mensagem</span></code> original e
+aplicar formatações necessárias para melhorar os resultados da pesquisa.
+Genericamente, esta <em>prompt</em> poderá ter a forma:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Com base na pergunta do utilizador, gera uma query de pesquisa para a base de dados.
+Pergunta: &quot;{mensagem}&quot;
+Regras para criar a query:
+- Mantém apenas os termos essenciais
+- Escreve em minúsculas exceto nomes próprios
+- Não uses aspas ou caracteres especiais
+&lt;...&gt;
+EXEMPLOS:
+Pergunta: &quot;Quem é &lt;pessoa específica&gt;?&quot; → Query: &quot;&lt;pessoa específica&gt;&quot;
+Pergunta: &quot;O que é &lt;assunto específico&gt;?&quot; → Query: &quot;&lt;assunto específico&gt;&quot;
+&lt;...&gt;
+Responde apenas completando a próxima frase.
+Query de pesquisa:
+</pre></div>
+</div>
+<p>Após realizar a pesquisa com a <code class="docutils literal notranslate"><span class="pre">query</span></code> na base de dados e obter um conjunto de
+documentos relevantes e as suas fontes, estes poderão ser então
+adicionados ao contexto da <em>prompt</em> final ao AMALIA para responder à
+<code class="docutils literal notranslate"><span class="pre">mensagem</span></code> original. Um exemplo genérico é:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Encontrámos &lt;n&gt; resultados para a pesquisa: {query}
+
+Aqui estão os resultados:
+
+&lt;primeiro documento e fonte&gt;
+
+&lt;segundo documento e fonte&gt;
+&lt;...&gt;
+
+Com base nesta informação responde ao pedido do utilizador com os dados
+relevantes, citando as fontes necessárias: {user_message}
+</pre></div>
+</div>
+<p>No final, o utilizador obterá uma resposta correta, detalhada, e devidamente citada,
+conforme os documentos indexados na base de dados.</p>
+</section>
+<section id="seguranca">
+<h2>Segurança<a class="headerlink" href="#seguranca" title="Link to this heading">#</a></h2>
+<p>Em diversas aplicações, será útil garantir que os pedidos dos utilizadores
+respeitam normas de segurança antes de realizar qualquer processamento.</p>
+<p>Para este propósito, foi utilizado o <a class="reference external" href="https://qwen.ai/blog?id=qwen3guard">Qwen3Guard</a>
+em vários casos de uso do AMALIA, sendo
+possível classificar os pedidos dos utilizadores como seguros, inseguros
+ou controversos, bem como obter uma categoria para o tipo de insegurança.</p>
+<p>Com esta informação, o fluxo da aplicação poderá ser adaptado
+para devolver respostas padrão seguras quando os pedidos não são seguros.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="como_usar.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Como Usar</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="model_card.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Card</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexacao-e-pesquisa-de-documentos">Indexação e Pesquisa de Documentos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacao-do-fluxo-de-rag">Implementação do Fluxo de RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seguranca">Segurança</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>AMALIA: Assistente Multimodal Automático de Linguagem com IA<br>Todos os materiais estão disponíveis de acordo com a licença Apache 2.0</div>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

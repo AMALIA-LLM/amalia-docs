@@ -1,0 +1,616 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Como Usar &#8212; Documentação AMALIA</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'como_usar';</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/js/brands.min.js"></script>
+    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilização com RAG" href="rag.html" />
+    <link rel="prev" title="Documentação AMALIA" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo-color-black.png" class="logo__image only-light" alt="Documentação AMALIA - Home"/>
+    <img src="_static/logo-color-white.png" class="logo__image only-dark pst-js-only" alt="Documentação AMALIA - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AMALIA-LLM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://huggingface.co/amalia-llm" title="HuggingFace" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-hugging-face fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">HuggingFace</span></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Como Usar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rag.html">Utilização com RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_card.html">Model Card</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_model_card.html">Multimodal Model Card</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use_cases.html">Casos de Uso</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Como Usar</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acesso-via-api">Acesso via API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acesso-ao-modelo-publico">Acesso ao Modelo Público</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#como-servir-uma-api-localmente">Como servir uma API localmente</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizacao-de-api-local">Utilização de API local</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizacao-do-modelo-multimodal">Utilização do Modelo Multimodal</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="como-usar">
+<h1>Como Usar<a class="headerlink" href="#como-usar" title="Link to this heading">#</a></h1>
+<section id="acesso-via-api">
+<h2>Acesso via API<a class="headerlink" href="#acesso-via-api" title="Link to this heading">#</a></h2>
+<p>O AMALIA está disponível via API no <a class="reference external" href="https://iaedu.pt">IAedu</a> para
+professores e investigadores. Após realizar login e escolher o modelo
+AMALIA, os parâmetros da API podem ser obtidos clicando na roda no canto
+superior direito. Com estes, é possível interagir com o modelo usando o
+código:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="n">formData</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;channel_id&quot;</span><span class="p">:</span> <span class="n">channel_id</span><span class="p">,</span>
+    <span class="s2">&quot;thread_id&quot;</span><span class="p">:</span> <span class="n">thread_id</span><span class="p">,</span>
+    <span class="s2">&quot;user_info&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x-api-key&#39;</span><span class="p">:</span> <span class="n">api_key</span> <span class="p">},</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">formData</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="n">jsonline</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">jsonline</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">jsonline</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p>Neste exemplo, <code class="docutils literal notranslate"><span class="pre">message</span></code> representa a mensagem enviada ao modelo e
+<code class="docutils literal notranslate"><span class="pre">thread_id</span></code> é o identificador da conversa, para manutenção do
+contexto.</p>
+<!-- No caso de aceder ao modelo via uma API disponibilizada por vLLM, o código a usar é:
+
+````python
+import requests
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": token
+}
+payload = {
+    "model": model_name,
+    "messages": [
+        {
+            "role": "user",
+            "content": message
+        }
+    ]
+}
+response = requests.post(url, headers=headers, json=payload)
+if response.status_code == 200:
+    print(response.json()['choices'][0]['message']['content'])
+````
+
+Aqui, o pedido é enviado para o endereço indicado em ``url``, autenticado com um certo ``token``. O modelo com o nome indicado em ``model_name`` responderá então à mensagem  enviada em ``message``.
+
+Para manter o contexto de uma conversa por esta via, as mensagens anteriores poderão ser incluídas na lista de ``messages``, indicando o ``role`` de ``user`` ou ``assistant`` para mensagens do utilizador e do AMALIA respetivamente. --></section>
+<section id="acesso-ao-modelo-publico">
+<h2>Acesso ao Modelo Público<a class="headerlink" href="#acesso-ao-modelo-publico" title="Link to this heading">#</a></h2>
+<p>O AMALIA está publicamente disponível em código-aberto via <a class="reference external" href="https://huggingface.co/amalia-llm">HuggingFace</a>.</p>
+<section id="como-servir-uma-api-localmente">
+<h3>Como servir uma API localmente<a class="headerlink" href="#como-servir-uma-api-localmente" title="Link to this heading">#</a></h3>
+<p>Para servir localmente o AMALIA, o hardware mínimo é de uma GPU <a class="reference external" href="https://www.nvidia.com/en-eu/data-center/a100/">NVIDIA A100 40GB</a>, sendo que
+para aplicações com vários clientes é recomendado um mínimo de 4 destas GPUs.
+O software recomendado é o <a class="reference external" href="https://vllm.ai/">vLLM</a> instalado em ambiente <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html">conda</a> com Python 3.12+:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>vllm_env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>vllm<span class="w"> </span>--torch-backend<span class="o">=</span>auto
+<span class="c1"># Login HuggingFace</span>
+hf<span class="w"> </span>auth<span class="w"> </span>login
+</pre></div>
+</div>
+<p>O seguinte <em>script</em> <code class="docutils literal notranslate"><span class="pre">serve_llm.sh</span></code> exemplifica como servir o AMALIA com vLLM recorrendo ao gestor de recursos <a class="reference external" href="https://slurm.schedmd.com/overview.html">slurm</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH --job-name=vllm-serve</span>
+<span class="c1">#SBATCH --partition=slurm_queue</span>
+<span class="c1">#SBATCH --nodes=1</span>
+<span class="c1">#SBATCH --ntasks=1</span>
+<span class="c1">#SBATCH --gres=gpu:nvidia_a100-40gb:4  # Pedir 4 GPUs</span>
+<span class="c1">#SBATCH --cpus-per-task=64             # Alocar CPUs do sistema</span>
+<span class="c1">#SBATCH --mem=256G                     # Alocar memória RAM do sistema</span>
+<span class="c1">#SBATCH --output=logs/%x-%j.out</span>
+<span class="c1">#SBATCH -e logs/%x-%j.err</span>
+
+<span class="c1"># Ativar o ambiente conda</span>
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>conda<span class="w"> </span>shell.bash<span class="w"> </span>hook<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>vllm_env
+
+<span class="c1"># Correr vLLM</span>
+<span class="c1"># $1: Nome do modelo, $2: Host $3: Porto, $4: Chave API $5: Chat template</span>
+python<span class="w"> </span>-m<span class="w"> </span>vllm.entrypoints.openai.api_server<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--host<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--port<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$3</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tokenizer-mode<span class="w"> </span>hf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--config-format<span class="w"> </span>hf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tensor-parallel-size<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--gpu-memory-utilization<span class="w"> </span><span class="m">0</span>.90<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-key<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$4</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--chat-template<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$5</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Como exemplo, para correr localmente o modelo de texto no porto 8001, com uma certa chave de API <code class="docutils literal notranslate"><span class="pre">api_key</span></code>, o <em>script</em> pode ser lançado com o comando abaixo.
+O ficheiro <code class="docutils literal notranslate"><span class="pre">chat_template.jinja</span></code> padrão está disponível no repositório HuggingFace.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>serve_llm.sh<span class="w"> </span>amalia-llm/AMALIA-9B-50-DPO<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="m">8001</span><span class="w"> </span>api_key<span class="w"> </span>./chat_template.jinja
+</pre></div>
+</div>
+</section>
+<section id="utilizacao-de-api-local">
+<h3>Utilização de API local<a class="headerlink" href="#utilizacao-de-api-local" title="Link to this heading">#</a></h3>
+<p>Tendo o modelo disponível em servidor local, um exemplo simples de utilização
+com <code class="docutils literal notranslate"><span class="pre">curl</span></code> é:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://127.0.0.1:8001/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer api_key&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data<span class="w"> </span><span class="s1">&#39;{&quot;model&quot;: &quot;amalia-llm/AMALIA-9B-50-DPO&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Olá&quot;}]}&#39;</span>
+</pre></div>
+</div>
+<p>Ou usando Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8001/v1/chat/completions&quot;</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer api_key&quot;</span>
+<span class="p">}</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-9B-50-DPO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Olá&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;choices&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;message&#39;</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Uma API local servida com vLLM desta forma segue o <a class="reference external" href="https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create">formato de API da OpenAI</a>.</p>
+<p>Os exemplos anteriores mostram como enviar mensagens únicas ao modelo.
+Para fornecer contexto anterior de uma conversa, basta juntar turnos anteriores à lista de <code class="docutils literal notranslate"><span class="pre">messages</span></code>, como por exemplo:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Por favor trata-me por Miguel&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Olá, Miguel. Como posso ajudar-te hoje?&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Qual é o meu nome?&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Outros parâmetros opcionais que poderão ser úteis são:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">max_completion_tokens</span></code>: Permite limitar o número de <em>tokens</em> da resposta do modelo;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>: Permite ajustar a variância das respostas. Um valor de 0 produz respostas deterministas,
+valores mais próximos de 1 permitem mais variância;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stream</span></code>: Se <code class="docutils literal notranslate"><span class="pre">true</span></code>, o modelo funcionará em formato de <em>streaming</em>, respondendo <em>token</em> a <em>token</em> à medida que estes são gerados em tempo real.
+O processamento da resposta deverá ser feita de forma diferente que anteriormente dado o seu formato diferente.</p></li>
+</ul>
+<p>Um exemplo de utilização destes parâmetros é:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-9B-50-DPO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Olá&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;max_completion_tokens&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="utilizacao-do-modelo-multimodal">
+<h3>Utilização do Modelo Multimodal<a class="headerlink" href="#utilizacao-do-modelo-multimodal" title="Link to this heading">#</a></h3>
+<p>Com a versão multimodal (visão e linguagem) do AMALIA é possível também carregar imagens no <em>input</em> do utilizador, permitindo que o modelo responda a perguntas sobre o conteúdo da imagem.
+Para tal, basta seguir os passos detalhados anteriormente, adicionando apenas um <em>path</em> para a imagem ao <code class="docutils literal notranslate"><span class="pre">content</span></code> da mensagem, da forma:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-VL-DPO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;path/to/image.png&quot;</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;O que está nesta imagem?&quot;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Documentação AMALIA</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rag.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Utilização com RAG</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acesso-via-api">Acesso via API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acesso-ao-modelo-publico">Acesso ao Modelo Público</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#como-servir-uma-api-localmente">Como servir uma API localmente</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizacao-de-api-local">Utilização de API local</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#utilizacao-do-modelo-multimodal">Utilização do Modelo Multimodal</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>AMALIA: Assistente Multimodal Automático de Linguagem com IA<br>Todos os materiais estão disponíveis de acordo com a licença Apache 2.0</div>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
