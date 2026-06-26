@@ -173,8 +173,8 @@
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
 </button></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main Navigation">
+    <div class="bd-toc-item navbar-nav">
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="como_usar.html">Como Usar</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Utilização com RAG</a></li>
@@ -184,7 +184,272 @@
 </ul>
 
     </div>
-</nav></div>
+</nav>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const jsonUrl = "_static/global_sections.json";
+    const currentDocname = "rag";
+
+    fetch(jsonUrl)
+        .then(response => response.json())
+        .then(globalSections => {
+            const sidebarItems = document.querySelectorAll(".bd-links li.toctree-l1");
+            let activeLi = null;
+
+            sidebarItems.forEach((li, index) => {
+                const link = li.querySelector("a.reference.internal");
+                if (!link) return;
+
+                let href = link.getAttribute("href");
+                let cleanKey;
+
+                if (href.startsWith("#") || href === "") {
+                    cleanKey = currentDocname;
+                } else {
+                    cleanKey = href.split('#')[0].replace(/\.html$/, "").replace(/^(\.\.\/)+/, "");
+                }
+
+                if (cleanKey === "." || cleanKey === "") cleanKey = "index";
+
+                const sections = globalSections[cleanKey];
+
+                if (sections && sections.length > 0) {
+                    let subUl = li.querySelector("ul");
+                    let hasExistingToggle = li.classList.contains("has-children");
+
+                    if (!subUl) {
+                        subUl = document.createElement("ul");
+                        subUl.classList.add("nav", "bd-sidenav", "custom-injected-ul");
+                        li.appendChild(subUl);
+                    }
+
+                    if (li.classList.contains("current") || li.classList.contains("active")) {
+                        activeLi = li;
+                    }
+
+                    if (!hasExistingToggle) {
+                        li.classList.add("has-children");
+                        const toggleId = `custom-toggle-${index}`;
+
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.id = toggleId;
+                        checkbox.classList.add("custom-toctree-checkbox");
+
+                        if (li.classList.contains("current") || li.classList.contains("active")) {
+                            checkbox.checked = true;
+                        }
+
+                        const label = document.createElement("label");
+                        label.setAttribute("for", toggleId);
+                        label.classList.add("custom-toggle-label");
+                        label.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+
+                        link.after(label);
+                        link.after(checkbox);
+                    }
+
+                    sections.forEach(sec => {
+                        const targetHref = href.startsWith("#") ? `#${sec.id}` : `${href.split('#')[0]}#${sec.id}`;
+                        if (subUl.querySelector(`a[href*="#${sec.id}"]`)) return;
+
+                        const subLi = document.createElement("li");
+                        subLi.classList.add(`toctree-l${sec.level + 1}`);
+
+                        const subLink = document.createElement("a");
+                        subLink.classList.add("reference", "internal");
+                        subLink.href = targetHref;
+                        subLink.innerText = sec.title;
+                        subLink.setAttribute("data-level", sec.level);
+
+                        subLi.appendChild(subLink);
+                        subUl.appendChild(subLi);
+                    });
+                }
+            });
+
+            if (activeLi) {
+                const subLinks = activeLi.querySelectorAll("ul.custom-injected-ul a");
+                const targets = [];
+
+                subLinks.forEach(a => {
+                    const hash = a.getAttribute("href").split("#")[1];
+                    if (hash) {
+                        const el = document.getElementById(hash);
+                        if (el) targets.push({ link: a, element: el });
+                    }
+                });
+
+                function updateScrollspy() {
+                    let currentTarget = null;
+                    const scrollPos = window.scrollY || document.documentElement.scrollTop;
+
+                    for (const target of targets) {
+                        if (target.element.offsetTop - 120 <= scrollPos) {
+                            currentTarget = target;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // Clear previous highlights
+                    subLinks.forEach(a => {
+                        a.classList.remove("custom-active-heading");
+                        a.classList.remove("custom-active-parent-heading");
+                    });
+
+                    if (currentTarget) {
+                        currentTarget.link.classList.add("custom-active-heading");
+
+                        // Walk backwards to find and highlight the parent header
+                        let currentLevel = parseInt(currentTarget.link.getAttribute("data-level"));
+                        const subLinksArr = Array.from(subLinks);
+                        const activeIndex = subLinksArr.indexOf(currentTarget.link);
+
+                        for (let i = activeIndex - 1; i >= 0; i--) {
+                            let iterLevel = parseInt(subLinksArr[i].getAttribute("data-level"));
+                            // If we find an element with a higher hierarchy (lower number)
+                            if (iterLevel < currentLevel) {
+                                subLinksArr[i].classList.add("custom-active-parent-heading");
+                                currentLevel = iterLevel;
+                            }
+                            if (currentLevel === 1) break;
+                        }
+                    }
+                }
+
+                window.addEventListener("scroll", updateScrollspy);
+                setTimeout(updateScrollspy, 200);
+            }
+        })
+        .catch(err => console.error("Error fetching global sections: ", err));
+});
+</script>
+
+<style>
+    .bd-links input.custom-toctree-checkbox {
+        display: none !important;
+    }
+
+    .bd-links li.has-children {
+        position: relative;
+    }
+
+    .bd-links li.has-children > a {
+        padding-right: 2rem !important;
+    }
+
+    .bd-links .custom-toggle-label {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 2.2rem;
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        cursor: pointer;
+        color: var(--pst-color-text-muted, #555);
+        z-index: 10;
+    }
+
+    .bd-links .custom-toggle-label i,
+    .bd-links .custom-toggle-label svg {
+        transition: transform 0.2s ease-out;
+    }
+    .bd-links input.custom-toctree-checkbox:checked + label.custom-toggle-label i,
+    .bd-links input.custom-toctree-checkbox:checked + label.custom-toggle-label svg {
+        transform: rotate(180deg);
+    }
+
+    .bd-links input.custom-toctree-checkbox ~ ul {
+        display: none;
+    }
+    .bd-links input.custom-toctree-checkbox:checked ~ ul {
+        display: block;
+    }
+
+    .bd-links ul.custom-injected-ul li a {
+        color: var(--pst-color-text-base, #333) !important;
+        text-decoration: none !important;
+        display: block;
+        transition: color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+        padding: 0.25rem 0 !important;
+        position: relative;
+    }
+    .bd-links ul.custom-injected-ul li a:hover {
+        color: var(--pst-color-primary, #2f54eb) !important;
+        opacity: 1 !important;
+    }
+
+    /* Indentation base logic */
+    .bd-links ul.custom-injected-ul li a[data-level="1"] {
+        padding-left: 1.2rem !important;
+        font-size: 0.9em !important;
+    }
+    .bd-links ul.custom-injected-ul li a[data-level="2"] {
+        padding-left: 2.0rem !important;
+        font-size: 0.85em !important;
+        opacity: 0.8;
+    }
+    .bd-links ul.custom-injected-ul li a[data-level="3"] {
+        padding-left: 2.8rem !important;
+        font-size: 0.82em !important;
+        opacity: 0.65;
+    }
+
+    /* Fixed Box-Shadow for the Main Sphinx Header */
+    .bd-links li.current > a.reference.internal,
+    .bd-links li.active > a.reference.internal {
+        box-shadow: inset 3px 0 0 0 var(--pst-color-primary, #2f54eb) !important;
+    }
+
+    /* Active Highlight States */
+    .bd-links ul.custom-injected-ul li a.custom-active-heading,
+    .bd-links ul.custom-injected-ul li a.custom-active-parent-heading {
+        color: var(--pst-color-primary, #2f54eb) !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+    }
+
+    /* --- UPDATED: Indented Blue Marker via Pseudo-element --- */
+    /* Now applies to BOTH the exact active section and its parent */
+    .bd-links ul.custom-injected-ul li a.custom-active-heading::before,
+    .bd-links ul.custom-injected-ul li a.custom-active-parent-heading::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background-color: var(--pst-color-primary, #2f54eb);
+    }
+
+    /* Match the line offset to align properly with the text indentation */
+    .bd-links ul.custom-injected-ul li a[data-level="1"].custom-active-heading::before,
+    .bd-links ul.custom-injected-ul li a[data-level="1"].custom-active-parent-heading::before {
+        left: 0;
+    }
+
+    .bd-links ul.custom-injected-ul li a[data-level="2"].custom-active-heading::before,
+    .bd-links ul.custom-injected-ul li a[data-level="2"].custom-active-parent-heading::before {
+        left: 0.8rem;
+    }
+
+    .bd-links ul.custom-injected-ul li a[data-level="3"].custom-active-heading::before,
+    .bd-links ul.custom-injected-ul li a[data-level="3"].custom-active-parent-heading::before {
+        left: 1.6rem;
+    }
+
+    /* Dark mode */
+    html[data-theme="dark"] .bd-links ul.custom-injected-ul li a {
+        color: var(--pst-color-text-base, #d1d5db) !important;
+    }
+    html[data-theme="dark"] .bd-links ul.custom-injected-ul li a:hover,
+    html[data-theme="dark"] .bd-links ul.custom-injected-ul li a.custom-active-heading,
+    html[data-theme="dark"] .bd-links ul.custom-injected-ul li a.custom-active-parent-heading {
+        color: var(--pst-color-primary, #597ef7) !important;
+    }
+</style></div>
     </div>
   
   
