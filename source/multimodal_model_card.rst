@@ -151,3 +151,115 @@ A avaliação mostra que, dentro dos modelos abertos, o AMALIA-VL é
 **altamente competitivo** em português europeu, com excelente desempenho
 em tarefas de compreensão de texto em imagens e em tarefas de
 ancoragem de respostas a imagens.
+
+Recuperação de Vídeo
+--------------------------
+
+O AMALIA-VL pode ser utilizado para fazer pesquisa de vídeos a partir de
+consultas em linguagem natural. Tanto os *frames* como a consulta textual são
+representados como vetores no espaço de *embeddings* do modelo de linguagem do
+AMALIA-VL, e a pesquisa resume-se a encontrar os *frames* cujo vetor está mais
+próximo do vetor da consulta.
+
+Passo 1 - Extração de *keyframes*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Reduzir cada vídeo a um conjunto de *frames* representativos, por amostragem
+uniforme (um *frame* a cada N segundos). Cada *keyframe* guarda o vídeo de
+origem e o instante temporal a que corresponde.
+
+Passo 2 - Construção do índice de *embeddings*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Passar cada *keyframe* pelo *vision tower* e pelo *multimodal projector* do
+AMALIA-VL e calcular o vetor médio dos *tokens* visuais, obtendo um vetor por
+*frame*. Armazenar cada vetor com os respetivos metadados; o conjunto destes
+vetores é o índice pesquisável.
+
+Passo 3 - Pesquisa com linguagem natural
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Passar a consulta pela tabela de *embeddings* de *tokens* do AMALIA-VL e
+calcular o vetor médio, obtendo um vetor no mesmo espaço. Calcular a sua
+similaridade com todos os vetores do índice e ordenar os *frames* por
+proximidade.
+
+Passo 4 - Agregação de *frames* e obtenção do vídeo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Agrupar os *frames* correspondentes pelo vídeo de origem e pontuar cada vídeo
+a partir dos seus *frames* (pelo melhor *frame*, ou pela média dos melhores).
+A cada vídeo no topo do *ranking* corresponde o seu ficheiro de origem, que é
+resolvido a partir do identificador do vídeo e devolvido como resultado
+final, acompanhado do *frame* de melhor pontuação, que
+identifica o momento mais relevante do vídeo.
+
+O excerto seguinte demonstra este fluxo de ponta a ponta, usando exclusivamente
+o AMALIA-VL. Os *frames* passam pelo *vision tower* e pelo *multimodal
+projector*, e a consulta passa pela tabela de *embeddings* de *tokens*; em
+ambos os casos calcula-se o vetor médio das representações, obtendo-se um vetor
+por *frame* e por consulta no mesmo espaço de *embeddings* do modelo de
+linguagem, onde a similaridade é calculada.
+
+.. code-block:: python
+
+   import torch
+   from pathlib import Path
+   from PIL import Image
+   from torchvision import transforms
+   from transformers import AutoTokenizer, LlavaNextForConditionalGeneration
+
+   device = "cuda" if torch.cuda.is_available() else "cpu"
+   amalia_id = "amalia-llm/AMALIA-VL-DPO"
+
+   model = LlavaNextForConditionalGeneration.from_pretrained(amalia_id).to(device).eval()
+   tokenizer = AutoTokenizer.from_pretrained(amalia_id)
+
+   # pré-processamento de imagem
+   preprocess = transforms.Compose([
+       transforms.Resize(384), transforms.CenterCrop(384), transforms.ToTensor(),
+       transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+   ])
+
+   # Passo 1 - keyframes já extraídos para keyframes/<video_id>/*.jpg, p. ex.:
+   #   ffmpeg -i video.mp4 -vf "fps=1/2" keyframes/video_id/%05d.jpg
+   FRAME_DIR, VIDEO_DIR = Path("keyframes"), Path("videos")  # vídeos originais: videos/<video_id>.mp4
+   frames = sorted(FRAME_DIR.rglob("*.jpg"))
+
+   # Passo 2 - índice: vision tower -> projector -> vetor médio dos tokens visuais
+   @torch.no_grad()
+   def embed_images(paths):
+       pixel_values = torch.stack([preprocess(Image.open(p).convert("RGB")) for p in paths])
+       pixel_values = pixel_values.to(device, model.dtype)
+       visual_tokens = model.vision_tower(pixel_values=pixel_values).last_hidden_state
+       feats = model.multi_modal_projector(visual_tokens).mean(dim=1)
+       return torch.nn.functional.normalize(feats, dim=-1)
+
+   index = torch.cat([embed_images(frames[i:i + 32]) for i in range(0, len(frames), 32)])
+
+   # Passo 3 - pesquisar: embeddings de tokens -> vetor médio -> similaridade
+   @torch.no_grad()
+   def search(query, k=100):
+       ids = tokenizer([query], return_tensors="pt").input_ids.to(device)
+       q = model.get_input_embeddings()(ids).mean(dim=1)                         
+       q = torch.nn.functional.normalize(q, dim=-1)
+       scores = (index @ q.T).squeeze(1)
+       top = scores.topk(min(k, len(frames))).indices.tolist()
+       return [(frames[i], scores[i].item()) for i in top]
+
+   # Passo 4 - agregar frames por vídeo e devolver o ficheiro de vídeo em si
+   def search_videos(query, k=5):
+       best = {}  # video_id -> (score, melhor frame)
+       for frame_path, score in search(query):
+           video_id = frame_path.parent.name
+           if score > best.get(video_id, (-1.0, None))[0]:
+               best[video_id] = (score, frame_path)
+       ranked = sorted(best.items(), key=lambda kv: kv[1][0], reverse=True)[:k]
+       return [
+           {"video": next(VIDEO_DIR.glob(f"{video_id}.*")),  # o ficheiro de vídeo
+            "score": score, "thumbnail": frame}
+           for video_id, (score, frame) in ranked
+       ]
+
+   for hit in search_videos("uma pessoa a andar a cavalo numa praia"):
+       print(f"{hit['score']:.3f}  {hit['video']}  (frame: {hit['thumbnail'].name})")
