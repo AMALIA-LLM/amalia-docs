@@ -1,5 +1,5 @@
-Model Card
-==========
+Ficha do Modelo
+===============
 
 O AMALIA é um modelo de linguagem aberto e criado especificamente para o
 português de Portugal e para a cultura portuguesa.

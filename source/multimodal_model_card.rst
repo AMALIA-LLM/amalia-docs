@@ -1,5 +1,5 @@
-Multimodal Model Card
-=====================
+Ficha do Modelo Multimodal
+==========================
 
 O AMALIA-VL é um modelo de multimodal (visão e linguagem) aberto e criado especificamente para o
 português de Portugal e para a cultura portuguesa.

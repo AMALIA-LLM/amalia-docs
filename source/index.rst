@@ -23,5 +23,4 @@ Tabela de Conteúdos
    rag
    model_card
    multimodal_model_card
-   use_cases
 
