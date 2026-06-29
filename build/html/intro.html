@@ -652,9 +652,9 @@ python<span class="w"> </span>-m<span class="w"> </span>vllm.entrypoints.openai.
 <span class="w">    </span>--chat-template<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$5</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>Como exemplo, para correr localmente o modelo de texto no porto 8001, com uma certa chave de API <code class="docutils literal notranslate"><span class="pre">api_key</span></code>, o <em>script</em> pode ser lançado com o comando abaixo.
+<p>Como exemplo, para correr localmente o modelo de texto <code class="docutils literal notranslate"><span class="pre">amalia-llm/AMALIA-9B-0626-DPO</span></code> no porto 8001, com uma certa chave de API <code class="docutils literal notranslate"><span class="pre">api_key</span></code>, o <em>script</em> pode ser lançado com o comando abaixo.
 O ficheiro <code class="docutils literal notranslate"><span class="pre">chat_template.jinja</span></code> padrão está disponível no repositório HuggingFace.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>serve_llm.sh<span class="w"> </span>amalia-llm/AMALIA-9B-50-DPO<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="m">8001</span><span class="w"> </span>api_key<span class="w"> </span>./chat_template.jinja
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>serve_llm.sh<span class="w"> </span>amalia-llm/AMALIA-9B-0626-DPO<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="m">8001</span><span class="w"> </span>api_key<span class="w"> </span>./chat_template.jinja
 </pre></div>
 </div>
 </section>
@@ -665,7 +665,7 @@ com <code class="docutils literal notranslate"><span class="pre">curl</span></co
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://127.0.0.1:8001/v1/chat/completions<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer api_key&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--data<span class="w"> </span><span class="s1">&#39;{&quot;model&quot;: &quot;amalia-llm/AMALIA-9B-50-DPO&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Olá&quot;}]}&#39;</span>
+<span class="w">    </span>--data<span class="w"> </span><span class="s1">&#39;{&quot;model&quot;: &quot;amalia-llm/AMALIA-9B-0626-DPO&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Olá&quot;}]}&#39;</span>
 </pre></div>
 </div>
 <p>Ou usando Python:</p>
@@ -679,7 +679,7 @@ com <code class="docutils literal notranslate"><span class="pre">curl</span></co
 <span class="p">}</span>
 
 <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-9B-50-DPO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-9B-0626-DPO&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
@@ -725,7 +725,7 @@ O processamento da resposta deverá ser feita de forma diferente que anteriormen
 </ul>
 <p>Um exemplo de utilização destes parâmetros é:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-9B-50-DPO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;amalia-llm/AMALIA-9B-0626-DPO&quot;</span><span class="p">,</span>
     <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>

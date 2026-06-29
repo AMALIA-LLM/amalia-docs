@@ -105,12 +105,12 @@ O seguinte *script* ``serve_llm.sh`` exemplifica como servir o AMALIA com vLLM r
        --api-key "$4" \
        --chat-template "$5"
 
-Como exemplo, para correr localmente o modelo de texto no porto 8001, com uma certa chave de API ``api_key``, o *script* pode ser lançado com o comando abaixo.
+Como exemplo, para correr localmente o modelo de texto ``amalia-llm/AMALIA-9B-0626-DPO`` no porto 8001, com uma certa chave de API ``api_key``, o *script* pode ser lançado com o comando abaixo.
 O ficheiro ``chat_template.jinja`` padrão está disponível no repositório HuggingFace.
 
 .. code:: shell
 
-   sbatch serve_llm.sh amalia-llm/AMALIA-9B-50-DPO 0.0.0.0 8001 api_key ./chat_template.jinja
+   sbatch serve_llm.sh amalia-llm/AMALIA-9B-0626-DPO 0.0.0.0 8001 api_key ./chat_template.jinja
 
 Utilização de API local
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,7 +123,7 @@ com ``curl`` é:
    curl -X POST http://127.0.0.1:8001/v1/chat/completions \
        -H "Content-Type: application/json" \
        -H "Authorization: Bearer api_key" \
-       --data '{"model": "amalia-llm/AMALIA-9B-50-DPO", "messages": [{"role": "user", "content": "Olá"}]}'
+       --data '{"model": "amalia-llm/AMALIA-9B-0626-DPO", "messages": [{"role": "user", "content": "Olá"}]}'
 
 Ou usando Python:
 
@@ -139,7 +139,7 @@ Ou usando Python:
    }
 
    payload = {
-       "model": "amalia-llm/AMALIA-9B-50-DPO",
+       "model": "amalia-llm/AMALIA-9B-0626-DPO",
        "messages": [
            {
                "role": "user",
@@ -190,7 +190,7 @@ Um exemplo de utilização destes parâmetros é:
 .. code:: python
 
    payload = {
-       "model": "amalia-llm/AMALIA-9B-50-DPO",
+       "model": "amalia-llm/AMALIA-9B-0626-DPO",
        "messages": [
            {
                "role": "user",
