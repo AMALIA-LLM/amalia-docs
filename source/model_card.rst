@@ -26,6 +26,8 @@ realizado em duas fases: pré-treino e pós-treino. O pós-treino aplicou
 técnicas de *Supervised Fine-Tuning* (SFT) e *Preference Tuning* (usando
 *Direct Preference Optimization*, DPO).
 
+O modelo está disponível no `HuggingFace <https://huggingface.co/amalia-llm/AMALIA-9B-0626-DPO>`__.
+
 Detalhes de Treino
 ------------------
 

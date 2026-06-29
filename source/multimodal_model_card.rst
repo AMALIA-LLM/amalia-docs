@@ -27,6 +27,8 @@ fases: *Modality Alignment*, *Visual Instruction Following* e *Preference Tuning
 As primeiras duas fases são realizadas através de *Supervised Fine-Tuning* (SFT),
 e a última fase é realizada usando *Direct Preference Optimization* (DPO).
 
+O modelo está disponível no `HuggingFace <https://huggingface.co/amalia-llm/AMALIA-VL-DPO>`__.
+
 Detalhes de Treino Multimodal
 -----------------------------
 
