@@ -159,6 +159,6 @@ No âmbito do AMALIA, foram desenvolvidos novos *benchmarks* com o objetivo de a
 
 Adicionalmente, vários *benchmarks* de referência foram traduzidos de inglês para português europeu recorrendo a um modelo de tradução dedicado.
 
-Para garantir avaliações reproduzíveis, o processo de avaliação utiliza a framework `LLM Evaluation Harness <https://github.com/EleutherAI/lm-evaluation-harness>`__ com código e tarefas customizadas disponível no `GitHub <https://github.com/Amalia-LLM/amalia-eval>`__.
+Para garantir avaliações reproduzíveis, o processo de avaliação utiliza a framework `LLM Evaluation Harness <https://github.com/EleutherAI/lm-evaluation-harness>`__ com código e tarefas customizadas disponível no `GitHub <https://github.com/Amalia-LLM/amalia-lm-eval>`__.
 
 Os resultados demonstram que, no ecossistema de modelos totalmente abertos (*fully open-source*), o AMALIA posiciona-se entre os **modelos de referência** para o português europeu, apresentando um desempenho ao nível do estado da arte. Em termos de segurança, o AMALIA encontra-se **alinhado** com os padrões e práticas de segurança observados nos modelos de referência atuais.
