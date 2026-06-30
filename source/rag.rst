@@ -302,3 +302,108 @@ protegendo assim o bom funcionamento do sistema informático.
 Com esta salvaguarda, o fluxo da aplicação poderá ser adaptado
 para devolver respostas padrão seguras quando os pedidos não são seguros.
 
+Recuperação de Vídeo
+~~~~~~~~~~~~~~~~~~~~~
+
+O AMALIA-VL pode ser utilizado para fazer pesquisa de vídeos a partir de
+consultas em linguagem natural. Tanto os *frames* como a consulta textual são
+representados como vetores no espaço de *embeddings* do modelo de linguagem do
+AMALIA-VL, e a pesquisa resume-se a encontrar os *frames* cujo vetor está mais
+próximo do vetor da consulta.
+
+Todo o fluxo assenta exclusivamente no AMALIA-VL. Começa-se por carregar o
+modelo e o seu *tokenizer*, e por definir o pré-processamento de imagem:
+
+.. code-block:: python
+
+   import torch
+   from pathlib import Path
+   from PIL import Image
+   from torchvision import transforms
+   from transformers import AutoTokenizer, LlavaNextForConditionalGeneration
+
+   device = "cuda" if torch.cuda.is_available() else "cpu"
+   amalia_id = "amalia-llm/AMALIA-VL-DPO"
+
+   model = LlavaNextForConditionalGeneration.from_pretrained(amalia_id).to(device).eval()
+   tokenizer = AutoTokenizer.from_pretrained(amalia_id)
+
+   preprocess = transforms.Compose([
+       transforms.Resize(384), transforms.CenterCrop(384), transforms.ToTensor(),
+       transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+   ])
+
+A base de dados é preparada reduzindo cada vídeo a um conjunto de *frames*
+representativos por amostragem uniforme, por exemplo um *frame* a cada dois
+segundos com o ``ffmpeg``:
+
+.. code-block:: bash
+
+   ffmpeg -i video.mp4 -vf "fps=1/2" keyframes/<video_id>/%05d.jpg
+
+Organizando os *frames* por vídeo, cada um fica ligado à sua origem, o que
+mais tarde permite recuperar o vídeo correspondente a cada *frame*:
+
+.. code-block:: python
+
+   FRAME_DIR, VIDEO_DIR = Path("keyframes"), Path("videos")  # vídeos: videos/<video_id>.mp4
+   frames = sorted(FRAME_DIR.rglob("*.jpg"))
+
+Cada *keyframe* é depois convertido num único vetor: passa pelo *vision tower*
+e pelo *connector* do AMALIA-VL, e calcula-se o vetor médio dos
+*tokens* visuais resultantes. Aplicando isto a todos os *frames* obtém-se o
+índice pesquisável:
+
+.. code-block:: python
+
+   @torch.no_grad()
+   def embed_images(paths):
+       pixel_values = torch.stack([preprocess(Image.open(p).convert("RGB")) for p in paths])
+       pixel_values = pixel_values.to(device, model.dtype)
+       visual_tokens = model.vision_tower(pixel_values=pixel_values).last_hidden_state
+       feats = model.multi_modal_projector(visual_tokens).mean(dim=1)
+       return torch.nn.functional.normalize(feats, dim=-1)
+
+   index = torch.cat([embed_images(frames[i:i + 32]) for i in range(0, len(frames), 32)])
+
+Do lado do texto, a consulta é levada ao mesmo espaço passando pela tabela de
+*embeddings* de *tokens* e calculando igualmente o vetor médio; os *frames* do
+índice são então ordenados pela sua similaridade com este vetor:
+
+.. code-block:: python
+
+   @torch.no_grad()
+   def search(query, k=100):
+       ids = tokenizer([query], return_tensors="pt").input_ids.to(device)
+       q = model.get_input_embeddings()(ids).mean(dim=1)
+       q = torch.nn.functional.normalize(q, dim=-1)
+       scores = (index @ q.T).squeeze(1)
+       top = scores.topk(min(k, len(frames))).indices.tolist()
+       return [(frames[i], scores[i].item()) for i in top]
+
+Como as correspondências são ao nível do *frame* mas o objetivo é o vídeo,
+agrupam-se os *frames* por vídeo de origem e pontua-se cada vídeo pelo seu
+melhor *frame*. O resultado é o próprio ficheiro de vídeo, acompanhado do
+*frame* de melhor pontuação, que identifica o momento mais relevante:
+
+.. code-block:: python
+
+   def search_videos(query, k=5):
+       best = {}  # video_id -> (score, melhor frame)
+       for frame_path, score in search(query):
+           video_id = frame_path.parent.name
+           if score > best.get(video_id, (-1.0, None))[0]:
+               best[video_id] = (score, frame_path)
+       ranked = sorted(best.items(), key=lambda kv: kv[1][0], reverse=True)[:k]
+       return [
+           {"video": next(VIDEO_DIR.glob(f"{video_id}.*")), "score": score, "thumbnail": frame}
+           for video_id, (score, frame) in ranked
+       ]
+
+   for hit in search_videos("uma pessoa a andar a cavalo numa praia"):
+       print(f"{hit['score']:.3f}  {hit['video']}  (frame: {hit['thumbnail'].name})")
+
+O índice é calculado uma vez e reutilizado em todas as consultas; para coleções
+grandes, na ordem dos milhões de *frames*, a comparação exaustiva pode ser
+substituída por um índice de vizinhos mais próximos aproximados.
+
