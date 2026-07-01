@@ -124,7 +124,7 @@ instruções fornecidas. O treino decorreu durante 12 horas, recorrendo a
 
 Todas as fases de treino foram executadas no supercomputador
 `MareNostrum5 <https://www.bsc.es/marenostrum/marenostrum-5>`__, alojado
-no Barcelona Supercomputing Center.
+no Barcelona Supercomputing Center, e no supercomputador `DEUCALION <https://rnca.fccn.pt/en/deucalion/>`__, alojado no Centro Avançado de Computação do Minho.
 
 Avaliação
 ---------

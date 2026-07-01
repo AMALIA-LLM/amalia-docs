@@ -545,6 +545,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexacao-e-pesquisa-de-documentos">Indexação e Pesquisa de Documentos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacao-do-fluxo-de-rag">Implementação do Fluxo de RAG</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seguranca">Segurança</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuperacao-de-video">Recuperação de Vídeo</a></li>
 </ul>
             </nav>
         </div>
@@ -830,6 +831,97 @@ protegendo assim o bom funcionamento do sistema informático.</p>
 <p>Com esta salvaguarda, o fluxo da aplicação poderá ser adaptado
 para devolver respostas padrão seguras quando os pedidos não são seguros.</p>
 </section>
+<section id="recuperacao-de-video">
+<h2>Recuperação de Vídeo<a class="headerlink" href="#recuperacao-de-video" title="Link to this heading">#</a></h2>
+<p>O AMALIA-VL pode ser utilizado para fazer pesquisa de vídeos a partir de
+consultas em linguagem natural. Tanto os <em>frames</em> como a consulta textual são
+representados como vetores no espaço de <em>embeddings</em> do modelo de linguagem do
+AMALIA-VL, e a pesquisa resume-se a encontrar os <em>frames</em> cujo vetor está mais
+próximo do vetor da consulta.</p>
+<p>Todo o fluxo assenta exclusivamente no AMALIA-VL. Começa-se por carregar o
+modelo e o seu <em>tokenizer</em>, e por definir o pré-processamento de imagem:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">LlavaNextForConditionalGeneration</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="n">amalia_id</span> <span class="o">=</span> <span class="s2">&quot;amalia-llm/AMALIA-VL-DPO&quot;</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LlavaNextForConditionalGeneration</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">amalia_id</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">amalia_id</span><span class="p">)</span>
+
+<span class="n">preprocess</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>A base de dados é preparada reduzindo cada vídeo a um conjunto de <em>frames</em>
+representativos por amostragem uniforme, por exemplo um <em>frame</em> a cada dois
+segundos com o <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffmpeg<span class="w"> </span>-i<span class="w"> </span>video.mp4<span class="w"> </span>-vf<span class="w"> </span><span class="s2">&quot;fps=1/2&quot;</span><span class="w"> </span>keyframes/&lt;video_id&gt;/%05d.jpg
+</pre></div>
+</div>
+<p>Organizando os <em>frames</em> por vídeo, cada um fica ligado à sua origem, o que
+mais tarde permite recuperar o vídeo correspondente a cada <em>frame</em>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">FRAME_DIR</span><span class="p">,</span> <span class="n">VIDEO_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;keyframes&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;videos&quot;</span><span class="p">)</span>  <span class="c1"># vídeos: videos/&lt;video_id&gt;.mp4</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">FRAME_DIR</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.jpg&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Cada <em>keyframe</em> é depois convertido num único vetor: passa pelo <em>vision tower</em>
+e pelo <em>connector</em> do AMALIA-VL, e calcula-se o vetor médio dos
+<em>tokens</em> visuais resultantes. Aplicando isto a todos os <em>frames</em> obtém-se o
+índice pesquisável:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">embed_images</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+    <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">preprocess</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">])</span>
+    <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">pixel_values</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">visual_tokens</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">vision_tower</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">=</span><span class="n">pixel_values</span><span class="p">)</span><span class="o">.</span><span class="n">last_hidden_state</span>
+    <span class="n">feats</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">multi_modal_projector</span><span class="p">(</span><span class="n">visual_tokens</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">feats</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">embed_images</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">32</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">),</span> <span class="mi">32</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Do lado do texto, a consulta é levada ao mesmo espaço passando pela tabela de
+<em>embeddings</em> de <em>tokens</em> e calculando igualmente o vetor médio; os <em>frames</em> do
+índice são então ordenados pela sua similaridade com este vetor:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">([</span><span class="n">query</span><span class="p">],</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_input_embeddings</span><span class="p">()(</span><span class="n">ids</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">@</span> <span class="n">q</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)))</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">frames</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Como as correspondências são ao nível do <em>frame</em> mas o objetivo é o vídeo,
+agrupam-se os <em>frames</em> por vídeo de origem e pontua-se cada vídeo pelo seu
+melhor <em>frame</em>. O resultado é o próprio ficheiro de vídeo, acompanhado do
+<em>frame</em> de melhor pontuação, que identifica o momento mais relevante:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">search_videos</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># video_id -&gt; (score, melhor frame)</span>
+    <span class="k">for</span> <span class="n">frame_path</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+        <span class="n">video_id</span> <span class="o">=</span> <span class="n">frame_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">best</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">video_id</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">best</span><span class="p">[</span><span class="n">video_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">frame_path</span><span class="p">)</span>
+    <span class="n">ranked</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">kv</span><span class="p">:</span> <span class="n">kv</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;video&quot;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">VIDEO_DIR</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">video_id</span><span class="si">}</span><span class="s2">.*&quot;</span><span class="p">)),</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">score</span><span class="p">,</span> <span class="s2">&quot;thumbnail&quot;</span><span class="p">:</span> <span class="n">frame</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">video_id</span><span class="p">,</span> <span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ranked</span>
+    <span class="p">]</span>
+
+<span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">search_videos</span><span class="p">(</span><span class="s2">&quot;uma pessoa a andar a cavalo numa praia&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hit</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">hit</span><span class="p">[</span><span class="s1">&#39;video&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">  (frame: </span><span class="si">{</span><span class="n">hit</span><span class="p">[</span><span class="s1">&#39;thumbnail&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>O índice é calculado uma vez e reutilizado em todas as consultas; para coleções
+grandes, na ordem dos milhões de <em>frames</em>, a comparação exaustiva pode ser
+substituída por um índice de vizinhos mais próximos aproximados.</p>
+</section>
 </section>
 
 
@@ -882,6 +974,7 @@ para devolver respostas padrão seguras quando os pedidos não são seguros.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexacao-e-pesquisa-de-documentos">Indexação e Pesquisa de Documentos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacao-do-fluxo-de-rag">Implementação do Fluxo de RAG</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seguranca">Segurança</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuperacao-de-video">Recuperação de Vídeo</a></li>
 </ul>
   </nav></div>
 
